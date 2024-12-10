@@ -38,11 +38,7 @@ footer {
     max-width: 600px;
     padding: 2px 20px 30px 20px;
     margin: 30px auto auto auto;
-    height: 50px;
-}
-
-footer > section#direitosAutorais {
-    height: 2em;
+    height: auto;
 }
 
 footer > section#direitosAutorais > p {
