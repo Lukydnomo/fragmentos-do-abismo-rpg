@@ -3,7 +3,7 @@
 
 ## Sobre o Projeto
 
-O **Fragmentos do Abismo** é um sistema de RPG criado por **José Vitório** e **Willyan**, enquanto eu, **Lukydnomo**, estou desenvolvendo o site e cuidando de partes do design geral, documentos e programação. 
+O **Fragmentos do Abismo** é um sistema de RPG criado por **José Vitório** e **Willyan**, enquanto eu, **Lukydnomo (Andrio)**, estou desenvolvendo o site e cuidando de partes do design geral, documentos e programação. 
 
 A ideia do site é proporcionar ferramentas práticas para jogar o RPG, como:
 - **Criação de Personagens:** Preencha atributos, habilidades e características únicas.
@@ -30,7 +30,7 @@ Ainda estou começando, então o site não está funcional por completo. Planejo
 
 ## Sobre Mim
 
-Eu sou o **Lukydnomo**, tenho 14 anos e estou aprendendo a programar enquanto trabalho nesse projeto. Meu objetivo é criar algo divertido e útil para mim e meus amigos enquanto exploro o mundo do desenvolvimento web.
+Eu sou o **Lukydnomo (Andrio)**, tenho 14 anos e estou aprendendo a programar enquanto trabalho nesse projeto. Meu objetivo é criar algo divertido e útil para mim e meus amigos enquanto exploro o mundo do desenvolvimento web.
 
 ---
 
