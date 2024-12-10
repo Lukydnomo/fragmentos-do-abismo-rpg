@@ -41,6 +41,10 @@ footer {
     height: 50px;
 }
 
+footer > section#direitosAutorais {
+    height: 1em;
+}
+
 footer > section#direitosAutorais > p {
     font: normal normal 16px Kanit;
 }
