@@ -3,7 +3,7 @@
 
 ## Sobre o Projeto
 
-O **Fragmentos do Abismo** é um sistema de RPG criado por **José Vitório** e **Willyan Chiod**, enquanto eu, **Lukydnomo (Andrio)**, estou desenvolvendo o site e cuidando de partes do design geral, documentos e programação. 
+O **Fragmentos do Abismo** é um sistema de RPG criado por **José Vitório** e **Willian Chiodi**, enquanto eu, **Lukydnomo (Andrio)**, estou desenvolvendo o site e cuidando de partes do design geral, documentos e programação. 
 
 A ideia do site é proporcionar ferramentas práticas para jogar o RPG, como:
 - **Criação de Personagens:** Preencha atributos, habilidades e características únicas.
