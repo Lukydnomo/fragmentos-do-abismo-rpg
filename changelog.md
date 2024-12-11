@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.0.3v2] - 2024-12-11
+### Fixed
+- Padding e Font da área do changelog
+
 ## [1.0.3] - 2024-12-11
 ### Added
 - Sistema de rolagem na área da changelog
