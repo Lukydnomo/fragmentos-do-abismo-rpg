@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.0.3] - 2024-12-11
+### Added
+- Sistema de rolagem na área da changelog
+
 ## [1.0.2] - 2024-12-11
 ### Fixed
 - Changelog mau posicionado na página
