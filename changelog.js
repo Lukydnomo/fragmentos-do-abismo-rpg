@@ -1,7 +1,7 @@
 // Função para carregar o arquivo changelog.md
 async function loadChangelog() {
     try {
-        const response = await fetch('changelog.md'); // Carrega o arquivo
+        const response = await fetch('../changelog.md'); // Carrega o arquivo
         const text = await response.text();
         renderMarkdown(text);
     } catch (error) {
