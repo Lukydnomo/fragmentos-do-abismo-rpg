@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.1.0beta] - 2024-12-11
+### Added
+- Dark Mode
+
 ## [1.0.3v2] - 2024-12-11
 ### Fixed
 - Padding e Font da área do changelog

@@ -24,15 +24,14 @@
             color: #333;
             font-family: Kanit;
         }
-
         .changelog li {
             font-family: Kanit;
         }
     </style>
 </head>
 <body>
-    <header>
-        <nav>
+    <header id="header">
+        <nav id="nav">
             <section class='botao'>
                 <div id="strokes">
                     <img src="../images/menu3.svg" alt="menu3" class='images' id='menu3'>
@@ -48,9 +47,14 @@
                     </table>
                 </div>
             </section>
+            <section class="darkMode">
+                <div id="darkState">
+                    <img src="../images/toggleOff.svg" alt="" id="darkStateIMG" onclick="darkMode()">
+                </div>
+            </section>
         </nav>
     </header>
-    <main>
+    <main id="main">
         <p id="sobre" style='text-align: center; font: normal normal 16px Kanit;'>Olá e bem vindo ser humano, muitos vão trocar de raça assim que fizerem a ficha, e outros vão continuar na mesma, mas bem,  caso esteja se perguntando oque é um RPG vou ser sincero, como mestre e como player, é um jogo com amigos que vai fazer você chorar em posição fetal durante semanas, então players sejam bons com o mestre, pra ele não surtar e matar vocês.<br><br>Esse RPG foi baseado no anime / mangá / novel de Re:Zero, pois eu amo, muitas coisas são de lá ainda, porém tem coisas o suficiente para eu chamar de plágio legal de coisas diversas e um pouco de criatividade, espero que gostem
         </p>
     </main>
@@ -59,7 +63,7 @@
         <p>Carregando...</p>
     </div>
     <script src="../changelog.js"></script>
-    <footer>
+    <footer id="footer">
         <section id='direitosAutorais'>
             <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href="https://i.imgur.com/uhYj3qU.jpeg">Fragmentos do Absimo RPG</a> by <span property="cc:attributionName">José Vitório & Lukydnomo & Willian Chiodi</span> is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC BY-NC-ND 4.0<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/nd.svg?ref=chooser-v1" alt=""></a></p>
         </section>

@@ -21,6 +21,8 @@ main {
 }
 
 nav {
+    display: flex;
+    flex-direction: row;
     background-color: white;
     border-radius: 10px;
     box-shadow: 5px 5px 15px rgba(15, 25, 54, 0.644);
@@ -173,4 +175,10 @@ footer > section#direitosAutorais > p > a:hover {
     transform: translate(3px, 3px);
     background-color: #916d9e;
     color: '#eeeeee';
+}
+
+#darkStateIMG {
+    filter: invert();
+    height: 40px;
+    transform: translate(0, -25%);
 }
