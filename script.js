@@ -11,11 +11,14 @@ function darkMode() {
     var nav = document.getElementById('nav');
     var footer = document.getElementById('footer');
     var changelog = document.getElementById('changelog');
-    const changeH1 = document.querySelectorAll('.changeH1');
-    const changeH2 = document.querySelectorAll('.changeH2');
-    const changeH3 = document.querySelectorAll('.changeH3');
-    const changeLI = document.querySelectorAll('.changeLI');
+    const h1 = document.querySelectorAll('h1');
+    const h2 = document.querySelectorAll('h2');
+    const h3 = document.querySelectorAll('h3');
+    const li = document.querySelectorAll('li');
     var strokes = document.getElementById('strokes');
+    var strokeOptions = document.getElementById('strokeOptions');
+    var prof = document.getElementById('prof');
+    const body = document.querySelectorAll('body');
 
     if (darkState == 0) {
         darkStateIMG.src = '../images/toggleOn.svg';
@@ -25,18 +28,21 @@ function darkMode() {
         nav.style.backgroundColor = '#292929';
         footer.style.backgroundColor = 'rgba(14, 14, 14, 0.959)';
         changelog.style.backgroundColor = '#292929';
-
-        changeH1.forEach(elemento => {
+        h1.forEach(elemento => {
             elemento.style.color = '#FFFFFF';
         });
-        changeH2.forEach(elemento => {
+        h2.forEach(elemento => {
             elemento.style.color = '#FFFFFF';
         });
-        changeH3.forEach(elemento => {
+        h3.forEach(elemento => {
             elemento.style.color = '#FFFFFF';
         });
-        changeLI.forEach(elemento => {
+        li.forEach(elemento => {
             elemento.style.color = '#FFFFFF';
+        });
+        strokeOptions.style.backgroundColor = '#292929';
+        body.forEach(elemeto => {
+            elemeto.style.backgroundImage = 'linear-gradient(to right, #24064B, #110342)';
         });
 
         main.style.color = '#FFFFFF';
@@ -45,6 +51,7 @@ function darkMode() {
         changelog.style.color = '#FFFFFF';
 
         strokes.style.filter = 'none';
+        prof.style.filter = 'none';
     } else {
         darkStateIMG.src = '../images/toggleOff.svg';
         darkState = 0;
@@ -53,18 +60,22 @@ function darkMode() {
         nav.style.backgroundColor = '#FFFFFF';
         footer.style.backgroundColor = 'rgba(241, 241, 241, 0.959)';
         changelog.style.backgroundColor = '#FFFFFF';
-
-        changeH1.forEach(elemento => {
+    
+        h1.forEach(elemento => {
             elemento.style.color = '#333';
         });
-        changeH2.forEach(elemento => {
+        h2.forEach(elemento => {
             elemento.style.color = '#333';
         });
-        changeH3.forEach(elemento => {
+        h3.forEach(elemento => {
             elemento.style.color = '#333';
         });
-        changeLI.forEach(elemento => {
+        li.forEach(elemento => {
             elemento.style.color = '#333';
+        });
+        strokeOptions.style.backgroundColor = '#FFFFFF';
+        body.forEach(elemeto => {
+            elemeto.style.backgroundImage = 'linear-gradient(to right, #B496DB, #564787)';
         });
 
         main.style.color = '#000000';
@@ -73,5 +84,6 @@ function darkMode() {
         changelog.style.color = '#000000';
 
         strokes.style.filter = 'invert()';
+        prof.style.filter = 'invert()';
     }
 }

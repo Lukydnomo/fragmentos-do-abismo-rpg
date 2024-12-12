@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1] - 2024-12-12
+### Fixed
+- Strokes Menu com a coloração bugada ao usar o Dark Mode
+
+### Suggestion
+- O background no modo escuro foi mudado pra ver como vcs recebem a nova coloração. Melhorou, ou manter o background normal no Dark Mode?
+
 ## [1.1.0] - 2024-12-11
 ### Added / Fixed
 - Full Dark Mode
