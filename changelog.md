@@ -1,8 +1,12 @@
 # Changelog
 
+## [1.1.0] - 2024-12-11
+### Added / Fixed
+- Full Dark Mode
+
 ## [1.1.0beta] - 2024-12-11
 ### Added
-- Dark Mode
+- Beta Dark Mode
 
 ## [1.0.3v2] - 2024-12-11
 ### Fixed
