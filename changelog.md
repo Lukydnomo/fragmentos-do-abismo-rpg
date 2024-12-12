@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.1.2] - 2024-12-12
+### Added
+- Um log detalhado pra nerdolas
+
+'Código pra add o log detalhado: <code>.replace(/^'(.*)'$/gim, '&lt;br&gt;&lt;details&gt;&lt;summary&gt;Log detalhado&lt;/summary&gt;$1&lt;/details&gt;')</code>'
+
 ## [1.1.1] - 2024-12-12
 ### Fixed
 - Strokes Menu com a coloração bugada ao usar o Dark Mode
