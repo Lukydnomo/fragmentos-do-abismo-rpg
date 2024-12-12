@@ -5,7 +5,7 @@
 - Strokes Menu com a coloração bugada ao usar o Dark Mode
 
 ### Suggestion
-- O background no modo escuro foi mudado pra ver como vcs recebem a nova coloração. Melhorou, ou manter o background normal no Dark Mode?
+- O background no modo escuro foi mudado pra ver como vcs recebem a nova coloração. Melhorou? Ou devo manter o background normal no Dark Mode?
 
 ## [1.1.0] - 2024-12-11
 ### Added / Fixed
