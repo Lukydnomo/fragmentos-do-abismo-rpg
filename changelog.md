@@ -2,7 +2,7 @@
 
 ## [1.1.3v2] - 2024-12-13
 ### Added
-- Hyperlink pra "Re:Zero" no texto de boas vindas
+- Hyperlink pra "Re:Zero" no texto de boas-vindas
 
 ### Fixed
 - Texto de boas vindas estava com pontuação irregular
