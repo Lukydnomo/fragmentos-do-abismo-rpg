@@ -22,6 +22,7 @@ function renderMarkdown(markdown) {
         .replace(/^\- (.*$)/gim, '<li class="changeLI">$1</li>')
         .replace(/^'(.*?)'$/gims, '<br><details><summary>Log detalhado</summary><pre><code>$1</code></pre></details>')
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\_(.*?)\_$/gim, '<em>$1</em>')
 
     container.innerHTML = html;
 }

@@ -195,11 +195,25 @@ footer > section#direitosAutorais > p > a:hover {
     overflow-y: auto;
     height: 400px;
     font-family: Kanit;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 .changelog h1, .changelog h2, .changelog h3, .changelog details, .changelog li, .changelog summary {
     color: #333;
     font-family: Kanit;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 600px;
 }
 .changelog details {
     padding: 0px 0px 0px 5px;
+}
+
+.changelog code {
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 600px;
 }
