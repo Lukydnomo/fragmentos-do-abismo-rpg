@@ -1,5 +1,43 @@
 # Changelog
 
+## [1.1.3] - 2024-12-13
+### Fixed
+- Estilos agora estão dentro do arquivo global
+- Logs detalhados estavam sendo disconsiderados no modo escuro
+
+' **Estilos agora estão dentro do arquivo global:**
+bemvindo.html -> style.css:
+.changelog {
+    background: #fff;
+    padding: 15px 20px 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 30px auto 0px auto;
+    max-width: 600px;
+    box-shadow: 5px 5px 15px rgba(15, 25, 54, 0.644);
+    overflow-y: auto;
+    height: 400px;
+    font-family: Kanit;
+}
+.changelog h1, .changelog h2, .changelog h3, .changelog details, .changelog li, .changelog summary {
+    color: #333;
+    font-family: Kanit;
+}
+.changelog details {
+    padding: 0px 0px 0px 5px;
+}
+
+**Logs detalhados estavam sendo disconsiderados no modo escuro:**
+[...]
+.changelog summary {
+    color: #333;
+    font-family: Kanit;
+}
+.changelog details {
+    padding: 0px 0px 0px 5px;
+}
+[...]'
+
 ## [1.1.2] - 2024-12-12
 ### Added
 - Um log detalhado pra nerdolas

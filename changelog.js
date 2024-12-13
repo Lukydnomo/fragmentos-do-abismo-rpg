@@ -20,7 +20,8 @@ function renderMarkdown(markdown) {
         .replace(/^## (.*$)/gim, '<h2 class="changeH2">$1</h2>')
         .replace(/^### (.*$)/gim, '<h3 class="changeH3">$1</h3>')
         .replace(/^\- (.*$)/gim, '<li class="changeLI">$1</li>')
-        .replace(/^'(.*)'$/gim, '<br><details><summary>Log detalhado</summary>$1</details>')
+        .replace(/^'(.*?)'$/gims, '<br><details><summary>Log detalhado</summary><pre><code>$1</code></pre></details>')
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
 
     container.innerHTML = html;
 }

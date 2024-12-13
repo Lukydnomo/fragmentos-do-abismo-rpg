@@ -19,6 +19,8 @@ function darkMode() {
     var strokeOptions = document.getElementById('strokeOptions');
     var prof = document.getElementById('prof');
     const body = document.querySelectorAll('body');
+    const summary = document.querySelectorAll('summary');
+    const details = document.querySelectorAll('details');
 
     if (darkState == 0) {
         darkStateIMG.src = '../images/toggleOn.svg';
@@ -43,6 +45,12 @@ function darkMode() {
         strokeOptions.style.backgroundColor = '#292929';
         body.forEach(elemeto => {
             elemeto.style.backgroundImage = 'linear-gradient(to right, #24064B, #110342)';
+        });
+        summary.forEach(elemento => {
+            elemento.style.color = '#FFFFFF';
+        });
+        details.forEach(elemento => {
+            elemento.style.color = '#FFFFFF';
         });
 
         main.style.color = '#FFFFFF';
@@ -76,6 +84,9 @@ function darkMode() {
         strokeOptions.style.backgroundColor = '#FFFFFF';
         body.forEach(elemeto => {
             elemeto.style.backgroundImage = 'linear-gradient(to right, #B496DB, #564787)';
+        });
+        summary.forEach(elemento => {
+            elemento.style.color = '#333';
         });
 
         main.style.color = '#000000';
