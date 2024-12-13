@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.3v3] - 2024-12-13
+### Fixed
+- Hyperlink pra "Re:Zero" não estava sendo compatível com o Dark Mode
+
+'
+a.forEach(elemento => {
+            elemento.style.color = '#FFFFFF';
+        });
+<br><br>
+a.forEach(elemento => {
+            elemento.style.color = '#333';
+        });'
+
 ## [1.1.3v2] - 2024-12-13
 ### Added
 - Hyperlink pra "Re:Zero" no texto de boas-vindas

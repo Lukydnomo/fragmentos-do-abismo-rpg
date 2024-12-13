@@ -21,6 +21,7 @@ function darkMode() {
     const body = document.querySelectorAll('body');
     const summary = document.querySelectorAll('summary');
     const details = document.querySelectorAll('details');
+    const a = document.querySelectorAll("a");
 
     if (darkState == 0) {
         darkStateIMG.src = '../images/toggleOn.svg';
@@ -50,6 +51,9 @@ function darkMode() {
             elemento.style.color = '#FFFFFF';
         });
         details.forEach(elemento => {
+            elemento.style.color = '#FFFFFF';
+        });
+        a.forEach(elemento => {
             elemento.style.color = '#FFFFFF';
         });
 
@@ -86,6 +90,9 @@ function darkMode() {
             elemeto.style.backgroundImage = 'linear-gradient(to right, #B496DB, #564787)';
         });
         summary.forEach(elemento => {
+            elemento.style.color = '#333';
+        });
+        a.forEach(elemento => {
             elemento.style.color = '#333';
         });
 
