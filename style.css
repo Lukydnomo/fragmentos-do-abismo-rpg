@@ -11,6 +11,7 @@ body {
 }
 
 main {
+    display: flex;
     background-color: white;
     border-radius: 10px;
     box-shadow: 5px 5px 20px rgba(3, 18, 14, 0.651);
