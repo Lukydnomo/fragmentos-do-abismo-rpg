@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.4v5] - 2024-12-13
+### Added
+- Scroll colorido
+
+'scrollbar-width: thin;
+scrollbar-color: #333 #B496DB;'
+
 ## [1.1.3v4] - 2024-12-13
 ### Fixed
 - Display main se comportando como flex
