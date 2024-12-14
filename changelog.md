@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.1.3v4] - 2024-12-13
+### Fixed
+- Display main se comportando como flex
+
+'Era só ter tirado essa porra de **"display: flex;"**, eu sofro nesse merda viu'
+
 ## [1.1.3v3] - 2024-12-13
 ### Fixed
 - Hyperlink pra "Re:Zero" não estava sendo compatível com o Dark Mode
