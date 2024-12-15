@@ -98,7 +98,7 @@ footer > section#direitosAutorais > p > a:hover {
     display: none;
     position: absolute;
     background-color: white;
-    height: 500px;
+    height: auto;
     width: 200px;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;

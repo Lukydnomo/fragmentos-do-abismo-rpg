@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.0] - 2024-12-13
+### Added
+- Arquivo da página pra criar campanha e personagem (n tem nd lá ainda)
+- (#comecar) Botão pra levar pra aba de criar campanha/personagem
+- (#comecar) Botão compativel com modo escuro
+
+### Fixed
+- Stroke Options n se adaptava as opcões
+
+### Removed
+- Div aleatorio na aba home
+
 ## [1.1.4v5] - 2024-12-13
 ### Added
 - Scroll colorido

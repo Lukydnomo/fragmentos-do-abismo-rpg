@@ -22,6 +22,7 @@ function darkMode() {
     const summary = document.querySelectorAll('summary');
     const details = document.querySelectorAll('details');
     const a = document.querySelectorAll("a");
+    var botaoComecar = document.getElementById("comecar");
 
     if (darkState == 0) {
         darkStateIMG.src = '../images/toggleOn.svg';
@@ -56,6 +57,14 @@ function darkMode() {
         a.forEach(elemento => {
             elemento.style.color = '#FFFFFF';
         });
+        botaoComecar.style.background = '#24064B';
+        botaoComecar.addEventListener('mouseenter', () => {
+            botaoComecar.style.background = '#120325';
+        });
+        botaoComecar.addEventListener('mouseleave', () => {
+            botaoComecar.style.backgroundColor = '#24064B';
+        });
+        
 
         main.style.color = '#FFFFFF';
         nav.style.color = '#FFFFFF';
@@ -94,6 +103,13 @@ function darkMode() {
         });
         a.forEach(elemento => {
             elemento.style.color = '#333';
+        });
+        botaoComecar.style.background = '#D6A5E8';
+        botaoComecar.addEventListener('mouseenter', () => {
+            botaoComecar.style.background = '#916d9e';
+        });
+        botaoComecar.addEventListener('mouseleave', () => {
+            botaoComecar.style.backgroundColor = '#D6A5E8';
         });
 
         main.style.color = '#000000';
