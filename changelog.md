@@ -4,7 +4,7 @@
 ### Added
 - Botão pra área de Criar de Fichas (tem nada na área ainda kklol foda)
 
-### Remove
+### Removed
 - Botão começar da página "Bem - Vindo!" (era inútil kk)
 
 ## [1.2.0] - 2024-12-13
