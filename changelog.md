@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1] - 2025-02-03
+### Added
+- Botão pra área de Criar de Fichas (tem nada na área ainda kklol foda)
+
+### Remove
+- Botão começar da página "Bem - Vindo!" (era inútil kk)
+
 ## [1.2.0] - 2024-12-13
 ### Added
 - Arquivo da página pra criar campanha e personagem (n tem nd lá ainda)

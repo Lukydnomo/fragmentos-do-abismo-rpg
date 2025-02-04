@@ -85,6 +85,27 @@ footer > section#direitosAutorais > p > a:hover {
     color: '#eeeeee';
 }
 
+.botao#criadorDeFichas {
+    background-color: #D6A5E8;
+    margin-left: 1em;
+    margin-right: auto;
+    margin-top: -0.9em;
+    height: 2.7em;
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    box-shadow: 3px 3px 1px rgba(15, 25, 54, 0.644);
+}
+
+.botao#criadorDeFichas:hover {
+    box-shadow: 0px 0px 0px  rgba(15, 25, 54, 0.644);
+    transform: translate(3px, 3px);
+    background-color: #916d9e;
+    color: '#eeeeee';
+}
+
 .botao > #strokes {
     display: flex;
     filter: invert();
