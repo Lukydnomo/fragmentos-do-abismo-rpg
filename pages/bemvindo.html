@@ -1,58 +1,152 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="../images/favicon.ico"
+      type="image/x-icon"
+    />
     <title>Bem - Vindo!</title>
-    <link rel="stylesheet" href="../style.css">
-    <script src='../script.js'></script>
-</head>
-<body>
+    <link rel="stylesheet" href="../style.css" />
+    <script src="../script.js"></script>
+  </head>
+  <body>
     <header id="header">
-        <nav id="nav">
-            <section class='botao'>
-                <div id="strokes">
-                    <img src="../images/menu3.svg" alt="menu3" class='images' id='menu3'>
-                </div>
-                <div class='menu' id='strokeOptions'>
-                    <table class="login" id="options">
-                        <td>
-                            <img src="../images/profile.svg" alt="profile" style="filter: invert();" class="login" id="prof">
-                        </td>
-                        <td>
-                            <p class="login" id="LGtexts"><span id='signUp' onclick='nextPage("login/signup.html")'>Sign Up</span><br><span id='logIn' onclick='nextPage("login/login.html")'>Log In</span></p>
-                        </td>
-                    </table>
-                </div>
-            </section>
-            <section class="darkMode">
-                <div id="darkState">
-                    <img src="../images/toggleOff.svg" alt="" id="darkStateIMG" onclick="darkMode()">
-                </div>
-            </section>
-            <section class="button">
-                <div class="botao" id='criadorDeFichas' onclick="nextPage('menu.html')">
-                    <p><strong>Criador de Fichas</strong></p>
-                </div>
-            </section>
-        </nav>
+      <nav id="nav">
+        <section class="botao">
+          <div id="strokes">
+            <img
+              src="../images/menu3.svg"
+              alt="menu3"
+              class="images"
+              id="menu3"
+            />
+          </div>
+          <div class="menu" id="strokeOptions">
+            <table class="login" id="options">
+              <td>
+                <img
+                  src="../images/profile.svg"
+                  alt="profile"
+                  style="filter: invert()"
+                  class="login"
+                  id="prof"
+                />
+              </td>
+              <td>
+                <p class="login" id="LGtexts">
+                  <span id="signUp" onclick='nextPage("login/signup.html")'
+                    >Sign Up</span
+                  ><br /><span id="logIn" onclick='nextPage("login/login.html")'
+                    >Log In</span
+                  >
+                </p>
+              </td>
+            </table>
+          </div>
+        </section>
+        <section class="darkMode">
+          <div id="darkState">
+            <img
+              src="../images/toggleOff.svg"
+              alt=""
+              id="darkStateIMG"
+              onclick="darkMode()"
+            />
+          </div>
+        </section>
+        <section class="button">
+          <div
+            class="botao"
+            id="criadorDeFichas"
+            onclick="nextPage('magias.html')"
+          >
+            <p><strong>Magias</strong></p>
+          </div>
+        </section>
+      </nav>
     </header>
     <main id="main">
-        <p id="sobre" style='text-align: center; font: normal normal 16px Kanit;'>Olá e bem-vindo, ser humano! Muitos vão trocar de raça assim que fizerem a ficha, enquanto outros continuarão na mesma. Mas, bem, caso esteja se perguntando o que é um RPG, vou ser sincero: como mestre e como player, é um jogo com amigos que vai fazer você chorar em posição fetal durante semanas. Então, players, sejam bons com o mestre, para ele não surtar e acabar matando vocês.
-        <br><br>
-        Este RPG foi baseado no anime/mangá/novel <a href="https://pt.wikipedia.org/wiki/Re:Zero" style='color: #000000; font: italic normal 16px kanit;' target='_blank' rel='external'>Re:Zero</a>, porque eu amo essa obra. Muitas coisas são de lá, mas também há o suficiente para eu chamar de um "plágio legal" de várias fontes, misturado com um pouco de criatividade. Espero que gostem!
-        </p>
+      <p id="sobre" style="text-align: center; font: normal normal 16px Kanit">
+        Olá e bem-vindo, ser humano! Muitos vão trocar de raça assim que fizerem
+        a ficha, enquanto outros continuarão na mesma. Mas, bem, caso esteja se
+        perguntando o que é um RPG, vou ser sincero: como mestre e como player,
+        é um jogo com amigos que vai fazer você chorar em posição fetal durante
+        semanas. Então, players, sejam bons com o mestre, para ele não surtar e
+        acabar matando vocês. <br /><br />
+        Este RPG foi baseado no anime/mangá/novel
+        <a
+          href="https://pt.wikipedia.org/wiki/Re:Zero"
+          style="color: #000000; font: italic normal 16px kanit"
+          target="_blank"
+          rel="external"
+          >Re:Zero</a
+        >, porque eu amo essa obra. Muitas coisas são de lá, mas também há o
+        suficiente para eu chamar de um "plágio legal" de várias fontes,
+        misturado com um pouco de criatividade. Espero que gostem!
+      </p>
     </main>
     <div class="changelog" id="changelog">
-        <h1>Changelog</h1>
-        <p>Carregando...</p>
+      <h1>Changelog</h1>
+      <p>Carregando...</p>
     </div>
     <script src="../changelog.js"></script>
     <footer id="footer">
-        <section id='direitosAutorais'>
-            <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href="https://i.imgur.com/uhYj3qU.jpeg">Fragmentos do Absimo RPG</a> by <span property="cc:attributionName">José Vitório & Lukydnomo & Willian Chiodi</span> is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC BY-NC-ND 4.0<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/nd.svg?ref=chooser-v1" alt=""></a></p>
-        </section>
+      <section id="direitosAutorais">
+        <p
+          xmlns:cc="http://creativecommons.org/ns#"
+          xmlns:dct="http://purl.org/dc/terms/"
+        >
+          <a
+            property="dct:title"
+            rel="cc:attributionURL"
+            href="https://i.imgur.com/uhYj3qU.jpeg"
+            >Fragmentos do Absimo RPG</a
+          >
+          by
+          <span property="cc:attributionName"
+            >José Vitório & Lukydnomo & Willian Chiodi</span
+          >
+          is licensed under
+          <a
+            href="https://creativecommons.org/licenses/by-nc-nd/4.0/?ref=chooser-v1"
+            target="_blank"
+            rel="license noopener noreferrer"
+            style="display: inline-block"
+            >CC BY-NC-ND 4.0<img
+              style="
+                height: 22px !important;
+                margin-left: 3px;
+                vertical-align: text-bottom;
+              "
+              src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"
+              alt="" /><img
+              style="
+                height: 22px !important;
+                margin-left: 3px;
+                vertical-align: text-bottom;
+              "
+              src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"
+              alt="" /><img
+              style="
+                height: 22px !important;
+                margin-left: 3px;
+                vertical-align: text-bottom;
+              "
+              src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1"
+              alt="" /><img
+              style="
+                height: 22px !important;
+                margin-left: 3px;
+                vertical-align: text-bottom;
+              "
+              src="https://mirrors.creativecommons.org/presskit/icons/nd.svg?ref=chooser-v1"
+              alt=""
+          /></a>
+        </p>
+      </section>
     </footer>
-</body>
+  </body>
 </html>
