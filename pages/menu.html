@@ -1,12 +1,120 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Menu</title>
-    <link rel="stylesheet" href="../style.css">
-</head>
-<body>
-    
-</body>
+    <link rel="stylesheet" href="../style.css" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #121212;
+        color: #ffffff;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center; /* Alinha no eixo horizontal */
+        align-items: center; /* Alinha no eixo vertical */
+        height: 100vh; /* Ocupa toda a altura da tela */
+      }
+      .class-menu-container {
+        width: 80%;
+        max-width: 900px;
+        background: #1e1e1e;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      }
+      .tab-nav-container,
+      .tab-nav-container-secondary {
+        /* Transformando o container em uma grid de 2 colunas */
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        justify-items: center;
+        margin-bottom: 15px;
+      }
+      .tab,
+      .tab-secondary {
+        font-size: 20pt;
+        background: #282828;
+        border: none;
+        color: white;
+        padding: 20px 10px; /* Aumentando a altura */
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+        width: 80%; /* Diminuindo a largura */
+        text-align: center;
+        height: 100px; /* Definindo a altura dos botões */
+      }
+      .tab:hover,
+      .tab-secondary:hover {
+        background: #444;
+      }
+      .tab.active,
+      .tab-secondary.tab-secondary-active {
+        background: #6200ea;
+      }
+      /* Classe para esconder elementos */
+      .hidden {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="class-menu-container">
+      <!-- Botões para trocar entre Sistemas -->
+      <div class="tab-nav-container">
+        <button class="tab" id="btn-sys1">Sistema 1</button>
+        <button class="tab" id="btn-sys2">Sistema 2</button>
+      </div>
+      <!-- Menu do Sistema 1 -->
+      <div id="Sys1" class="tab-nav-container">
+        <button class="tab" onclick="goTO('magias.html')">Magias</button>
+        <button class="tab">Regras</button>
+        <button class="tab">#</button>
+        <button class="tab">#</button>
+      </div>
+      <!-- Menu do Sistema 2 (inicialmente oculto) -->
+      <div id="Sys2" class="tab-nav-container hidden">
+        <button class="tab">Habilidades</button>
+        <button class="tab">Equipamentos</button>
+        <button class="tab">#</button>
+        <button class="tab">#</button>
+      </div>
+    </div>
+
+    <script>
+      const btnSys1 = document.getElementById("btn-sys1");
+      const btnSys2 = document.getElementById("btn-sys2");
+      const sys1Menu = document.getElementById("Sys1");
+      const sys2Menu = document.getElementById("Sys2");
+
+      btnSys1.addEventListener("click", () => {
+        sys1Menu.classList.remove("hidden");
+        sys2Menu.classList.add("hidden");
+
+        btnSys1.classList.add("active");
+        btnSys2.classList.remove("active");
+      });
+
+      btnSys2.addEventListener("click", () => {
+        sys1Menu.classList.add("hidden");
+        sys2Menu.classList.remove("hidden");
+
+        btnSys2.classList.add("active");
+        btnSys1.classList.remove("active");
+      });
+
+      // Inicialmente, exibe o menu do Sistema 1 e oculta o do Sistema 2
+      sys1Menu.classList.remove("hidden");
+      sys2Menu.classList.add("hidden");
+      btnSys1.classList.add("active");
+
+      function goTO(page) {
+        window.location.href = page;
+      }
+    </script>
+  </body>
 </html>
