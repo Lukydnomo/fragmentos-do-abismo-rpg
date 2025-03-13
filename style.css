@@ -34,6 +34,35 @@ nav {
     height: 15px;
 }
 
+.tab-secondary {
+    --color-primary: #A347FF;
+    --color-secondary: #7000AC;
+    --color-smoky-black: #121212;
+    --color-light-black: #1F1F1F;
+    --color-black: #0a0a0a;
+    --color-dark-gray: #1E1E1E;
+    --color-white: #fff;
+    --color-gray: rgba(255, 255, 255, .1);
+    --color-off-white: rgba(255, 255, 255, .6);
+    --color-red: #d9534f;
+    --color-green: #3d8b40;
+    --3e5d6d54: 14px;
+    --80c59c1e: var(--color-smoky-black);
+    --176da6a0: 11px;
+    --c04798c4: var(--color-primary);
+    box-sizing: border-box;
+    font-family: Roboto,sans-serif;
+    font-size: var(--176da6a0);
+    height: 1.75rem;
+    padding-left: .5rem;
+    padding-right: .5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: var(--80c59c1e);
+    color: var(--color-primary);
+}
+
 footer {
     background-color: rgba(241, 241, 241, 0.959);
     border-radius: 10px;
