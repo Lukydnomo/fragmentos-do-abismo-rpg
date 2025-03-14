@@ -15,7 +15,8 @@
   <body>
     <header id="header">
       <nav id="nav">
-        <section class="botao">
+        <!-- Botão de menu com strokes -->
+        <section class="botao" onclick="toggleMenu()">
           <div id="strokes">
             <img
               src="../images/menu3.svg"
@@ -26,44 +27,48 @@
           </div>
           <div class="menu" id="strokeOptions">
             <table class="login" id="options">
-              <td>
-                <img
-                  src="../images/profile.svg"
-                  alt="profile"
-                  style="filter: invert()"
-                  class="login"
-                  id="prof"
-                />
-              </td>
-              <td>
-                <p class="login" id="LGtexts">
-                  <span id="signUp" onclick='nextPage("login/signup.html")'
-                    >Sign Up</span
-                  ><br /><span id="logIn" onclick='nextPage("login/login.html")'
-                    >Log In</span
-                  >
-                </p>
-              </td>
+              <tr>
+                <td>
+                  <img
+                    src="../images/profile.svg"
+                    alt="profile"
+                    style="filter: invert()"
+                    class="login"
+                    id="prof"
+                  />
+                </td>
+                <td>
+                  <p class="login" id="LGtexts">
+                    <span id="signUp" onclick='nextPage("login/signup.html")'
+                      >Sign Up</span
+                    ><br />
+                    <span id="logIn" onclick='nextPage("login/login.html")'
+                      >Log In</span
+                    >
+                  </p>
+                </td>
+              </tr>
             </table>
+            <!-- Ícone de dark mode dentro do menu -->
+            <div class="darkMode-toggle">
+              <img
+                src="../images/toggleOff.svg"
+                alt="Dark Mode Toggle"
+                id="darkStateIMG"
+                onclick="darkMode()"
+              />
+            </div>
           </div>
         </section>
-        <section class="darkMode">
-          <div id="darkState">
-            <img
-              src="../images/toggleOff.svg"
-              alt=""
-              id="darkStateIMG"
-              onclick="darkMode()"
-            />
-          </div>
-        </section>
+
+        <!-- Remova a seção separada de dark mode -->
         <section class="button">
           <div
             class="botao"
             id="criadorDeFichas"
-            onclick="nextPage('magias.html')"
+            onclick="nextPage('menu.html')"
           >
-            <p><strong>Magias</strong></p>
+            <p><strong>Menu</strong></p>
           </div>
         </section>
       </nav>
@@ -122,21 +127,24 @@
                 vertical-align: text-bottom;
               "
               src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"
-              alt="" /><img
+              alt=""
+            /><img
               style="
                 height: 22px !important;
                 margin-left: 3px;
                 vertical-align: text-bottom;
               "
               src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"
-              alt="" /><img
+              alt=""
+            /><img
               style="
                 height: 22px !important;
                 margin-left: 3px;
                 vertical-align: text-bottom;
               "
               src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1"
-              alt="" /><img
+              alt=""
+            /><img
               style="
                 height: 22px !important;
                 margin-left: 3px;
@@ -144,7 +152,8 @@
               "
               src="https://mirrors.creativecommons.org/presskit/icons/nd.svg?ref=chooser-v1"
               alt=""
-          /></a>
+            />
+          </a>
         </p>
       </section>
     </footer>

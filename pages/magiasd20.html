@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Magias</title>
+    <link rel="stylesheet" href="../style.css" />
+    <script src="../script.js" defer></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #121212;
+        color: #ffffff;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .class-rituals-container {
+        width: 80%;
+        max-width: 900px;
+        background: #1e1e1e;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      }
+      .tab-nav-container,
+      .tab-nav-container-secondary {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 15px;
+      }
+      .tab,
+      .tab-secondary {
+        background: #282828;
+        border: none;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+      .tab:hover,
+      .tab-secondary:hover {
+        background: #444;
+      }
+      .tab.active,
+      .tab-secondary.tab-secondary-active {
+        background: #6200ea;
+      }
+      .search-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+      .search-container .container {
+        display: flex;
+        align-items: center;
+        background: #282828;
+        padding: 10px;
+        border-radius: 5px;
+      }
+      .search-container .icon {
+        width: 20px;
+        margin-right: 10px;
+      }
+      .search-container .input {
+        background: transparent;
+        border: none;
+        color: white;
+        outline: none;
+      }
+      .magias-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 10px;
+      }
+      .magia {
+        background: #333;
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+        transition: transform 0.2s, background 0.3s;
+        cursor: pointer;
+      }
+      .magia:hover {
+        transform: scale(1.05);
+        background: #6200ea;
+      }
+      .descricao-container {
+        margin-top: 20px;
+        background: #222;
+        padding: 15px;
+        border-radius: 5px;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="class-rituals-container">
+      <div class="tab-nav-container">
+        <button class="tab active" data-elemento="todos">Todos</button>
+        <button class="tab" data-elemento="vento">Vento</button>
+        <button class="tab" data-elemento="terra">Terra</button>
+        <button class="tab" data-elemento="fogo">Fogo</button>
+        <button class="tab" data-elemento="gelo">Gelo</button>
+        <button class="tab" data-elemento="agua">Água</button>
+        <button class="tab" data-elemento="trevas">Trevas</button>
+        <button class="tab" data-elemento="luz">Luz</button>
+        <button class="tab" data-elemento="varia">Varia</button>
+      </div>
+      <div class="secondary-tab-container">
+        <div class="tab-nav-container-secondary">
+          <button
+            class="tab-secondary tab-secondary-active"
+            data-circulo="todos"
+          >
+            Todos
+          </button>
+          <button class="tab-secondary" data-circulo="1">1º Círculo</button>
+          <button class="tab-secondary" data-circulo="2">2º Círculo</button>
+          <button class="tab-secondary" data-circulo="3">3º Círculo</button>
+          <button class="tab-secondary" data-circulo="4">4º Círculo</button>
+        </div>
+      </div>
+      <div class="search-container">
+        <div class="container dark">
+          <img class="icon" src="../search.svg" alt="buscar" />
+          <input
+            class="input"
+            type="text"
+            placeholder="Buscar"
+            id="searchInput"
+          />
+        </div>
+      </div>
+      <div class="magias-container" id="magiasContainer">
+        <!--Primeiro Círculo-->
+
+        <!--Varia-->
+        <div
+          class="magia"
+          data-elemento="varia"
+          data-circulo="1"
+          data-descricao="Sua afinidade elemental aumenta temporariamente, atraindo sutilmente a mana de um determinado elemento para você. Isso concede um dado extra ao utilizar magias desse elemento. | Requisitos: Magia de Vento 1 | Custo de Mana: 3 | Efeito: Dado extra"
+        >
+          Buff Elemental
+        </div>
+        <div
+          class="magia"
+          data-elemento="varia"
+          data-circulo="1"
+          data-descricao="A mana de um determinado elemento circunda você, criando uma barreira fina que oferece uma proteção leve contra o mesmo elemento usado para invocar a magia.
+          | Requisitos: Magia 1 | Custo de Mana: 3 | Efeito: Resistência ao elemento"
+        >
+          Armadura Elemental
+        </div>
+        <!--Vento-->
+        <div
+          class="magia"
+          data-elemento="vento"
+          data-circulo="1"
+          data-descricao="Você cria uma grande flecha de vento, e caso a miragem seja bem-sucedida, você recebe um dado de vantagem.
+          | Requisitos: Vento 1 | Custo de Mana: 3 | Dano: 1d8 de perfuração."
+        >
+          Wind Arrow
+        </div>
+        <div
+          class="magia"
+          data-elemento="vento"
+          data-circulo="1"
+          data-descricao="O usuário dispara rajadas de vento a uma velocidade extremamente alta, capazes de cortar madeira, pedra e carne com facilidade.
+          | Requisitos: Afinidade com o Vento 1 | Custo de Mana: 3 | Dano: 2d4 de corte."
+        >
+          Fura
+        </div>
+        <div
+          class="magia"
+          data-elemento="vento"
+          data-circulo="1"
+          data-descricao="O usuário utiliza o vento para se impulsionar em uma direção específica, conseguindo deslocar-se uma distância maior do que o normal ao usar esta magia.
+          | Requisitos: Afinidade com o Vento 1 | Custo de Mana: 3 | Efeito: +3m de deslocamento."
+        >
+          Wind Burst
+        </div>
+        <!--Terra-->
+        <div
+          class="magia"
+          data-elemento="terra"
+          data-circulo="1"
+          data-descricao="O usuário convoca uma parede de terra do chão, normalmente utilizada para defesa, mas que também pode ser aplicada em ofensivas e movimentos evasivos.
+          | Requisitos: Afinidade com a Terra 1 | Custo de Mana: 3 | Dano da Parede: 15 HP"
+        >
+          Dona
+        </div>
+        <div
+          class="magia"
+          data-elemento="terra"
+          data-circulo="1"
+          data-descricao="O usuário forma um espinho de terra e lança em direção ao inimigo.
+          | Requisitos: Afinidade com a Terra 1 | Custo de Mana: 3 | Dano: 1d6"
+        >
+          Dona Ataque
+        </div>
+        <div
+          class="magia"
+          data-elemento="terra"
+          data-circulo="1"
+          data-descricao="Você prende o inimigo com correntes de terra no chão.
+          O inimigo deve girar Reflexos e Fortitude para evitar ou resistir à prisão.
+          | Requisitos: Afinidade com a Terra 1 | Custo de Mana: 3"
+        >
+          Earth Seal
+        </div>
+        <div
+          class="magia"
+          data-elemento="terra"
+          data-circulo="1"
+          data-descricao="Cria uma arma improvisada de baixa qualidade utilizando o elemento terra.
+          | Requisitos: Afinidade com a Terra 1 | Custo de Mana: 3 | Dano: Depende da arma criada"
+        >
+          Earth Sword
+        </div>
+        <div
+          class="magia"
+          data-elemento="terra"
+          data-circulo="1"
+          data-descricao="Você arremessa uma pedra no inimigo.
+          | Requisitos: Afinidade com a Terra 1 | Custo de Mana: 3 | Dano: 1d6"
+        >
+          Tuch Rock
+        </div>
+        <!--Fogo-->
+        <div
+          class="magia"
+          data-elemento="fogo"
+          data-circulo="1"
+          data-descricao="Você cria uma espada de fogo, embora ela não seja capaz de bloquear ataques físicos.
+          | Requisitos: Afinidade com o Fogo 1 | Custo de Mana: 3 | Dano: 1d4 e causa queimaduras contínuas"
+        >
+          Fire Sword
+        </div>
+        <div
+          class="magia"
+          data-elemento="fogo"
+          data-circulo="1"
+          data-descricao="Você cria uma área de fogo que dura 3 turnos.
+          | Requisitos: Afinidade com o Fogo 1 | Custo de Mana: 3 | Dano: Aplica efeito de queimadura"
+        >
+          Fire Territory
+        </div>
+        <div
+          class="magia"
+          data-elemento="fogo"
+          data-circulo="1"
+          data-descricao="Manifesta uma chama que incinera inimigos.
+          | Requisitos: Afinidade com o Fogo 1 | Custo de Mana: 3 | Dano: 1d4 e, se o dano for par, causa queimadura"
+        >
+          Goa
+        </div>
+        <!--Gelo-->
+        <div
+          class="magia"
+          data-elemento="gelo"
+          data-circulo="1"
+          data-descricao="Cria armas de gelo para lutar, duráveis o suficiente para resistir a ataques de fogo por um curto período.
+          | Requisitos: Afinidade com o Fogo 1 | Custo de Mana: 3 | Dano: 1d6 + 1d4"
+        >
+          Artes de Gelo
+        </div>
+        <div
+          class="magia"
+          data-elemento="gelo"
+          data-circulo="1"
+          data-descricao="Você ataca com um cristal de gelo.
+          | Requisitos: Afinidade com o Fogo 1 | Custo de Mana: 3 | Dano: 1d4 e, se o dano for par, causa queimadura"
+        >
+          Ice Crystal
+        </div>
+        <!--Água-->
+        <div
+          class="magia"
+          data-elemento="agua"
+          data-circulo="1"
+          data-descricao="Cura 1d4 de vida por 1d4+1 turnos.
+          | Requisitos: Água 1 | Custo de Mana: 3"
+        >
+          Água Corrente
+        </div>
+        <div
+          class="magia"
+          data-elemento="agua"
+          data-circulo="1"
+          data-descricao="Varia de potência de acordo com o usuário ou espírito, curando ferimentos físicos de uma pessoa.
+          | Requisitos: Água 1 | Custo de Mana: 3 | Efeito: 1d8 de cura"
+        >
+          Magia de Cura
+        </div>
+        <div
+          class="magia"
+          data-elemento="agua"
+          data-circulo="1"
+          data-descricao="Cria uma parede de água.
+          | Requisitos: Água 1 | Custo de Mana: 3 | Efeito: 15 HP"
+        >
+          Lar do Lagarto Aquático
+        </div>
+        <!--Multi-->
+        <div
+          class="magia"
+          data-elemento="vento, agua, fogo"
+          data-circulo="1"
+          data-descricao="Seu corpo levita até 2m do chão.
+          | Requisitos: Vento, Fogo e Água 1 | Custo de Mana: 3 (apenas em batalha)"
+        >
+          Levitação Corporal
+        </div>
+        <!--Trevas-->
+        <div
+          class="magia"
+          data-elemento="trevas"
+          data-circulo="1"
+          data-descricao="Ao imbuir sua arma, ela pode cortar o que não pode ser visto e atravessar objetos físicos momentaneamente.
+          | Requisitos: Afinidade com Sombras 1 | Custo de Mana: 3 | Efeito: Se cair 4 no 1d4, a arma não atravessa"
+        >
+          Camuflagem das trevas
+        </div>
+        <div
+          class="magia"
+          data-elemento="trevas"
+          data-circulo="1"
+          data-descricao="O usuário faz o alvo perder a noção de alguns sentidos, como visão ou audição, envolvendo-o em sombras, mas o alvo ainda sente o próprio corpo.
+          | Requisitos: Afinidade com Sombras 1 | Custo de Mana: 3 | Efeito: Faz o inimigo perder audição ou visão por 1d3 turnos"
+        >
+          Shamak
+        </div>
+        <div
+          class="magia"
+          data-elemento="trevas"
+          data-circulo="1"
+          data-descricao="Magia que cria cristais roxos, representando o tempo parado. Ao acertar, eles explodem, e os cacos causam dano adicional.
+          | Requisitos: Afinidade com Sombras 1 | Custo de Mana: 3 | Dano: 1d6 + 1d4"
+        >
+          Minya
+        </div>
+        <!--Luz-->
+        <div
+          class="magia"
+          data-elemento="luz"
+          data-circulo="1"
+          data-descricao="O usuário solta raios de luz quente em direção ao inimigo.
+          | Requisitos: Afinidade com Luz 1 | Custo de Mana: 3 | Dano: 1d8"
+        >
+          Jiwald
+        </div>
+        <div
+          class="magia"
+          data-elemento="luz"
+          data-circulo="1"
+          data-descricao="Envolve um objeto com uma luz dourada, tornando-o mais fácil de carregar.
+          | Requisitos: Afinidade com Luz 1 | Custo de Mana: 3 | Efeito: Deixa o objeto mais leve"
+        >
+          Akra
+        </div>
+        <div
+          class="magia"
+          data-elemento="luz"
+          data-circulo="1"
+          data-descricao="Você cria uma espada de luz.
+          | Requisitos: Afinidade com Luz 1 | Custo de Mana: 3 | Dano: 1d10"
+        >
+          Sabre de Luz
+        </div>
+
+        <!--Segundo Círculo-->
+      </div>
+      <div class="descricao-container" id="descricaoContainer"></div>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const tabs = document.querySelectorAll(".tab");
+        const circles = document.querySelectorAll(".tab-secondary");
+        const searchInput = document.getElementById("searchInput");
+        let filtroElemento = "todos";
+        let filtroCirculo = "todos";
+
+        function filtrarMagias() {
+          const magias = document.querySelectorAll(".magia");
+          magias.forEach((magia) => {
+            // Agora, o data-elemento pode conter vários valores separados por vírgula.
+            const elementosAttr = magia.getAttribute("data-elemento");
+            const elementos = elementosAttr
+              .split(",")
+              .map((e) => e.trim().toLowerCase());
+            const circulo = magia.getAttribute("data-circulo");
+            const nomeMagia = magia.textContent.toLowerCase();
+            const termoBusca = searchInput.value.toLowerCase();
+
+            const correspondeElemento =
+              filtroElemento === "todos" ||
+              elementos.includes(filtroElemento.toLowerCase());
+            const correspondeCirculo =
+              filtroCirculo === "todos" || filtroCirculo === circulo;
+            const correspondeBusca = nomeMagia.includes(termoBusca);
+
+            if (correspondeElemento && correspondeCirculo && correspondeBusca) {
+              magia.style.display = "block";
+            } else {
+              magia.style.display = "none";
+            }
+          });
+        }
+
+        tabs.forEach((tab) => {
+          tab.addEventListener("click", function () {
+            filtroElemento = this.getAttribute("data-elemento");
+            tabs.forEach((t) => t.classList.remove("active"));
+            this.classList.add("active");
+            filtrarMagias();
+          });
+        });
+
+        circles.forEach((circle) => {
+          circle.addEventListener("click", function () {
+            filtroCirculo = this.getAttribute("data-circulo");
+            circles.forEach((c) => c.classList.remove("tab-secondary-active"));
+            this.classList.add("tab-secondary-active");
+            filtrarMagias();
+          });
+        });
+
+        searchInput.addEventListener("input", filtrarMagias);
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const magias = document.querySelectorAll(".magia");
+        const descricaoContainer =
+          document.getElementById("descricaoContainer");
+
+        magias.forEach((magia) => {
+          magia.addEventListener("click", function () {
+            const descricao = this.getAttribute("data-descricao");
+            const elementos = this.getAttribute("data-elemento");
+            descricaoContainer.innerHTML = `<strong>Elementos:</strong> ${elementos}<br><br>${descricao}`;
+            descricaoContainer.style.display = "block";
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
