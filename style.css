@@ -108,3 +108,19 @@ footer a:hover {
     padding: 2px 5px;
     border-radius: 5px;
 }
+
+.darkMode-toggle {
+    margin-top: 10px;
+    text-align: center;
+  }
+  
+  .darkMode-toggle img {
+    width: 50px;  /* Tamanho ajustado - aumente se necessário */
+    height: 50px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  
+  .darkMode-toggle img:hover {
+    transform: scale(1.1);
+  }
