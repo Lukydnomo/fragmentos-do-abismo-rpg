@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ficha RE:Zero RPG</title>
+    <link rel="stylesheet" href="styleFichas.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Ficha RE:Zero RPG</h1>
+      <form id="fichaForm">
+        <button type="button" onclick="salvarJSON()">
+          💾 Salvar Ficha (JSON)
+        </button>
+        <input
+          type="file"
+          id="inputJson"
+          accept=".json"
+          onchange="carregarJSON()"
+          style="margin-top: 10px"
+        />
+
+        <!-- Dados Básicos -->
+        <section id="basico">
+          <h2>Dados Básicos</h2>
+          <label for="nome">Nome do Personagem:</label>
+          <input type="text" id="nome" name="nome" placeholder="Seu nome" />
+
+          <label for="raca">Raça:</label>
+          <select id="raca" name="raca">
+            <option value="">Selecione...</option>
+            <option>Humano</option>
+            <option>Demi-Humano</option>
+            <option>Semi-Humano</option>
+            <option>Lobisomem</option>
+            <option>Demônio/Oni</option>
+            <option>Elfo</option>
+            <option>Triclope</option>
+            <option>Ciclope</option>
+            <option>Semi-Dragão</option>
+            <option>Mult-membros</option>
+            <option>Semi-Gigante</option>
+            <option>Espírito</option>
+          </select>
+
+          <label for="classe">Classe:</label>
+          <select id="classe" name="classe">
+            <option value="">Selecione...</option>
+            <option>Mago</option>
+            <option>Feiticeiro</option>
+            <option>Bruxo</option>
+            <option>Necromante</option>
+            <option>Bárbaro</option>
+            <option>Bardo</option>
+            <option>Clérigo</option>
+            <option>Druida</option>
+            <option>Atirador</option>
+            <option>Cavaleiro</option>
+            <option>Paladino</option>
+            <option>Monge</option>
+            <option>Tank</option>
+            <option>Ladino</option>
+            <option>Guerreiro</option>
+            <option>Pugilista</option>
+            <option>Assassino</option>
+          </select>
+
+          <label for="origem">Origem:</label>
+          <select id="origem" name="origem">
+            <option value="">Selecione...</option>
+            <option>Artista</option>
+            <option>Médico Arcaico</option>
+            <option>Shinobi</option>
+            <option>Nobre / Ex-nobre</option>
+            <option>Comerciante</option>
+            <option>Cavaleiro</option>
+            <option>Mercenário</option>
+            <option>General / Comandante</option>
+            <option>Escravo / Ex-escravo</option>
+            <option>Criador de Metias</option>
+            <option>Criador de Armas</option>
+            <option>Bombardeiro</option>
+            <option>Investigador</option>
+            <option>Assassino</option>
+          </select>
+        </section>
+
+        <!-- Atributos -->
+        <section id="atributos-section">
+          <h2>Atributos (15 pontos para distribuir)</h2>
+          <div id="atributos">
+            <div class="atributo">
+              <label for="forca">Força:</label>
+              <input
+                type="number"
+                id="forca"
+                class="atributo-input"
+                data-nome="Força"
+                min="1"
+                max="5"
+                value="1"
+              />
+            </div>
+            <div class="atributo">
+              <label for="agilidade">Agilidade:</label>
+              <input
+                type="number"
+                id="agilidade"
+                class="atributo-input"
+                data-nome="Agilidade"
+                min="1"
+                max="5"
+                value="1"
+              />
+            </div>
+            <div class="atributo">
+              <label for="carisma">Carisma:</label>
+              <input
+                type="number"
+                id="carisma"
+                class="atributo-input"
+                data-nome="Carisma"
+                min="1"
+                max="5"
+                value="1"
+              />
+            </div>
+            <div class="atributo">
+              <label for="inteligencia">Inteligência:</label>
+              <input
+                type="number"
+                id="inteligencia"
+                class="atributo-input"
+                data-nome="Inteligência"
+                min="1"
+                max="5"
+                value="1"
+              />
+            </div>
+            <div class="atributo">
+              <label for="manaAttr">Mana:</label>
+              <input
+                type="number"
+                id="manaAttr"
+                class="atributo-input"
+                data-nome="Mana"
+                min="1"
+                max="5"
+                value="1"
+              />
+            </div>
+            <div class="atributo">
+              <label for="resistencia">Resistência:</label>
+              <input
+                type="number"
+                id="resistencia"
+                class="atributo-input"
+                data-nome="Resistência"
+                min="1"
+                max="5"
+                value="1"
+              />
+            </div>
+            <div class="atributo">
+              <label for="sorte">Sorte:</label>
+              <input
+                type="number"
+                id="sorte"
+                class="atributo-input"
+                data-nome="Sorte"
+                min="1"
+                max="5"
+                value="1"
+              />
+            </div>
+            <div class="atributo">
+              <label for="deteccao">Detecção:</label>
+              <input
+                type="number"
+                id="deteccao"
+                class="atributo-input"
+                data-nome="Detecção"
+                min="1"
+                max="5"
+                value="1"
+              />
+            </div>
+          </div>
+          <p>Pontos restantes: <span id="pontos-restantes">7</span></p>
+        </section>
+
+        <!-- Perícias -->
+        <section id="pericias-section">
+          <h2>Perícias</h2>
+          <p>
+            Selecione as perícias (máximo permitido:
+            <span id="max-pericias">0</span>).
+          </p>
+          <div id="pericias">
+            <label
+              ><input type="checkbox" name="pericias" value="Acrobacia" />
+              Acrobacia</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Adestramento" />
+              Adestramento</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Atletismo" />
+              Atletismo</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Atuação" />
+              Atuação</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Conhecimento" />
+              Conhecimento</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Crime" />
+              Crime</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Diplomacia" />
+              Diplomacia</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Enganação" />
+              Enganação</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Fortitude" />
+              Fortitude</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Furtividade" />
+              Furtividade</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Iniciativa" />
+              Iniciativa</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Intimidação" />
+              Intimidação</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Intuição" />
+              Intuição</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Investigação" />
+              Investigação</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Luta" />
+              Luta</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Magia de Água" />
+              Magia de Água</label
+            >
+            <label
+              ><input
+                type="checkbox"
+                name="pericias"
+                value="Magia de Fogo/Gelo"
+              />
+              Magia de Fogo/Gelo</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Magia de Terra" />
+              Magia de Terra</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Magia de Vento" />
+              Magia de Vento</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Magia de Luz" />
+              Magia de Luz</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Magia de Trevas" />
+              Magia de Trevas</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Arma" />
+              Arma</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Medicina" />
+              Medicina</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Atualidades" />
+              Atualidades</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Pontaria" />
+              Pontaria</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Criação" />
+              Criação</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Nobreza" />
+              Nobreza</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Reflexos" />
+              Reflexos</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Percepção" />
+              Percepção</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Tática" />
+              Tática</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Sobrevivência" />
+              Sobrevivência</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Vontade" />
+              Vontade</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Negociação" />
+              Negociação</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Explosivos" />
+              Explosivos</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Linguagem" />
+              Linguagem</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Contratante" />
+              Contratante</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Runas" />
+              Runas</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Maldições" />
+              Maldições</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Psychokinesis" />
+              Psychokinesis</label
+            >
+            <label
+              ><input type="checkbox" name="pericias" value="Pilotagem" />
+              Pilotagem</label
+            >
+          </div>
+        </section>
+
+        <!-- Status Calculados -->
+        <section id="stats-section">
+          <h2>Status Calculados</h2>
+          <p>HP: <span id="hp">0</span></p>
+          <p>Sanidade: <span id="sanidade">0</span></p>
+          <p>Mana: <span id="manaCalc">0</span></p>
+        </section>
+
+        <!-- Equipamentos -->
+        <section id="equipamento-section">
+          <h2>Equipamentos</h2>
+          <label for="equipamentos">Liste seus equipamentos:</label>
+          <textarea
+            id="equipamentos"
+            name="equipamentos"
+            rows="3"
+            placeholder="Ex: Katana, Armadura leve, Escudo..."
+          ></textarea>
+        </section>
+
+        <!-- Magias -->
+        <!-- Magias Selecionadas -->
+        <section id="magias-dinamicas">
+          <h2>Magias (1º Círculo)</h2>
+          <div id="magia-container"></div>
+          <button type="button" onclick="adicionarCampoMagia()">
+            + Adicionar Magia
+          </button>
+        </section>
+
+        <!-- Magias Livres (campo manual) -->
+        <section id="magias-livres">
+          <h2>Magias Extras (livres)</h2>
+          <label for="magias">Outras magias (livre):</label>
+          <textarea
+            id="magias"
+            name="magias"
+            rows="3"
+            placeholder="Ex: Magia personalizada, magia de outro círculo, etc..."
+          ></textarea>
+        </section>
+
+        <button type="button" onclick="gerarPDF()">Baixar Ficha em PDF</button>
+      </form>
+    </div>
+
+    <!-- jsPDF via CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="scriptFichas.js"></script>
+  </body>
+</html>
