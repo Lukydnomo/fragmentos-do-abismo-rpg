@@ -1,12 +1,21 @@
 # Changelog
 
+## [1.4.0] - 2025-03=30
+
+### Added
+
+- Criador de fichas experimental
+
+### Changed
+
+- Estilo do site
+
 ## [1.3.0] - 2025-03-13
 
 ### Added
 
 - Menu
 - Painel de magias (sistema d10 e d20)
-- Painel de regras (sistema d10 e d20)
 
 ## [1.2.1] - 2025-02-03
 
