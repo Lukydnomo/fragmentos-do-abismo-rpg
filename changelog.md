@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.5.0] - 2025-10-13
+
+### Updated
+
+- Criador de fichas melhorado
+
+'Basicamente foram mudados algumas partes do código para automatizar as perícias e atributos.
+Também foi melhorado o pdf e o sistema json.
+Adicionado tbm sistema de inventário'
+
 ## [1.4.0] - 2025-03-30
 
 ### Added

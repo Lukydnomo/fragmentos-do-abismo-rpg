@@ -1,361 +1,553 @@
-// script.js
+// scriptFichas.js
 
-// Variáveis para controle dos atributos
 const totalPontos = 15;
 const atributoInputs = document.querySelectorAll('.atributo-input');
 const pontosRestantesEl = document.getElementById('pontos-restantes');
-
-// Elementos dos status calculados
 const hpEl = document.getElementById('hp');
 const sanidadeEl = document.getElementById('sanidade');
 const manaCalcEl = document.getElementById('manaCalc');
-
-// Elementos para perícias
 const maxPericiasEl = document.getElementById('max-pericias');
 const periciaCheckboxes = document.querySelectorAll('#pericias input[type="checkbox"]');
+const racaSelect = document.getElementById('raca');
+const classeSelect = document.getElementById('classe');
 
-// Atualiza os pontos restantes e os status computados
+// Mapeamento de perícias automáticas por raça
+const periciasRaca = {
+  "Humano": [],
+  "Demi-Humano": ["Intuição", "Percepção", "Investigação"],
+  "Semi-Humano": ["Sobrevivência", "Fortitude", "Percepção"],
+  "Lobisomem": ["Reflexos", "Furtividade", "Acrobacia"],
+  "Demônio/Oni": ["Percepção", "Iniciativa"],
+  "Elfo": ["Furtividade", "Sobrevivência", "Vontade"],
+  "Vampiro ou Bonecos Amaldiçoado": ["Intuição", "Furtividade", "Enganação"],
+  "Triclope": [],
+  "Ciclope": ["Intuição", "Investigação", "Diplomacia"],
+  "Semi-Dragão": ["Psychokinesis", "Intuição", "Vontade"],
+  "Mult-membros": ["Sobrevivência", "Fortitude", "Tática"],
+  "Semi-Gigante": ["Iniciativa", "Fortitude", "Intimidação"],
+  "Espírito": ["Conhecimento", "Intuição"] // +1 magia de escolha
+};
+
+// Mapeamento de bônus de perícias extras por raça
+const periciasExtrasRaca = {
+  "Humano": 2,
+  "Demi-Humano": 2,
+  "Semi-Humano": 0,
+  "Lobisomem": 0,
+  "Demônio/Oni": 0,
+  "Elfo": 0,
+  "Vampiro ou Bonecos Amaldiçoado": 0,
+  "Triclope": 0,
+  "Ciclope": 0,
+  "Semi-Dragão": 0,
+  "Mult-membros": 0,
+  "Semi-Gigante": 0,
+  "Espírito": 0
+};
+
+// Mapeamento de perícias automáticas por classe
+const periciasClasse = {
+  "Mago": [],
+  "Feiticeiro": ["Linguagem"],
+  "Bruxo": ["Runas"],
+  "Necromante": ["Magia de Trevas"],
+  "Bárbaro": ["Luta", "Intimidação"],
+  "Bardo": ["Atuação"],
+  "Clérigo": ["Medicina"],
+  "Druida": [],
+  "Atirador": ["Pontaria","Percepção"],
+  "Guerreiro": ["Arma", "Luta"],
+  "Assassino": ["Furtividade", "Reflexos", "Acrobacia"],
+  // Adicione as demais classes conforme regras do sistema
+};
+
+// Atualiza pontos e status
 function atualizarAtributos() {
   let soma = 0;
   atributoInputs.forEach(input => {
-    soma += parseInt(input.value) || 0;
+    soma += parseInt(input.value) || 1;
   });
-  // Cada atributo inicia com 1; portanto, a soma base é 8.
-  const pontosUsados = soma - 8;
+  const pontosUsados = soma - atributoInputs.length;
   const restantes = totalPontos - pontosUsados;
   pontosRestantesEl.textContent = restantes >= 0 ? restantes : 0;
 
-  // Atualiza status: HP, Sanidade e Mana
+  // Cálculos detalhados conforme regras do sistema
+
+  // Resistência: HP base 25 + tabela
   const resistencia = parseInt(document.getElementById('resistencia').value) || 1;
-  hpEl.textContent = resistencia * 3; // Exemplo: HP = Resistência * 3
+  let hpBase = 25;
+  let hpBonus = 0;
+  if (resistencia === 1) hpBonus = 3;
+  else if (resistencia === 2) hpBonus = 6;
+  else if (resistencia === 3) hpBonus = 9;
+  else if (resistencia === 4) hpBonus = 12;
+  else if (resistencia === 5) hpBonus = 15;
+  else if (resistencia === 6) hpBonus = 18;
+  else if (resistencia === 7) hpBonus = 21;
+  else if (resistencia === 8) hpBonus = 24;
+  else if (resistencia === 9) hpBonus = 27;
+  else if (resistencia >= 10) hpBonus = 30;
+  hpEl.textContent = hpBase + hpBonus;
 
+  // Inteligência: Sanidade base 50 + tabela
   const inteligencia = parseInt(document.getElementById('inteligencia').value) || 1;
-  sanidadeEl.textContent = 50 + (inteligencia * 5); // Exemplo: Sanidade base 50 + (Inteligência * 5)
-  
+  let sanBonus = 0;
+  if (inteligencia === 1) sanBonus = 5;
+  else if (inteligencia === 2) sanBonus = 10;
+  else if (inteligencia === 3) sanBonus = 15;
+  else if (inteligencia === 4) sanBonus = 20;
+  else if (inteligencia === 5) sanBonus = 25;
+  else if (inteligencia === 6) sanBonus = 30;
+  else if (inteligencia === 7) sanBonus = 35;
+  else if (inteligencia === 8) sanBonus = 40;
+  else if (inteligencia === 9) sanBonus = 45;
+  else if (inteligencia >= 10) sanBonus = 50;
+  sanidadeEl.textContent = 50 + sanBonus;
+
+  // Mana: tabela
   const manaAttr = parseInt(document.getElementById('manaAttr').value) || 1;
-  manaCalcEl.textContent = manaAttr * 2; // Exemplo: Mana = Mana attribute * 2
+  let manaTotal = 0;
+  if (manaAttr === 1) manaTotal = 11;
+  else if (manaAttr === 2) manaTotal = 15;
+  else if (manaAttr === 3) manaTotal = 22;
+  else if (manaAttr === 4) manaTotal = 29;
+  else if (manaAttr === 5) manaTotal = 36;
+  else if (manaAttr === 6) manaTotal = 43;
+  else if (manaAttr === 7) manaTotal = 50;
+  else if (manaAttr === 8) manaTotal = 60;
+  else if (manaAttr === 9) manaTotal = 70;
+  else if (manaAttr === 10) manaTotal = 85;
+  else if (manaAttr > 10) manaTotal = 100 + (manaAttr - 10) * 20;
+  manaCalcEl.textContent = manaTotal;
 
-  // Atualiza o número máximo de perícias permitidas = Inteligência + 3
-  maxPericiasEl.textContent = inteligencia + 3;
+  atualizarPericias();
 }
 
-// Adiciona event listeners aos inputs de atributo
-atributoInputs.forEach(input => {
-  input.addEventListener('change', atualizarAtributos);
-});
-atualizarAtributos();
-
-// Controle de seleção de perícias: não permitir mais do que o permitido
-function atualizarPericias(event) {
+// Controle de seleção de perícias
+function atualizarPericias() {
   const inteligencia = parseInt(document.getElementById('inteligencia').value) || 1;
-  const maxAllowed = inteligencia + 3;
-  const checked = document.querySelectorAll('#pericias input[type="checkbox"]:checked');
-  if (checked.length > maxAllowed) {
-    event.target.checked = false;
-    alert(`Você só pode selecionar até ${maxAllowed} perícias.`);
-  }
+  const raca = racaSelect ? racaSelect.value : "";
+  const classe = classeSelect ? classeSelect.value : "";
+  const extras = periciasExtrasRaca[raca] || 0;
+  const automaticsRaca = periciasRaca[raca] || [];
+  const automaticsClasse = periciasClasse[classe] || [];
+  const maxAllowed = inteligencia + 3 + extras;
+
+  // Atualiza texto do máximo
+  maxPericiasEl.textContent = maxAllowed;
+
+  // Marca automáticas e desabilita
+  periciaCheckboxes.forEach(checkbox => {
+    if (automaticsRaca.includes(checkbox.value) || automaticsClasse.includes(checkbox.value)) {
+      checkbox.checked = true;
+      checkbox.disabled = true;
+    } else {
+      checkbox.disabled = false;
+    }
+  });
+
+  // Conta apenas as não automáticas
+  const checked = Array.from(periciaCheckboxes)
+    .filter(cb => cb.checked && !automaticsRaca.includes(cb.value) && !automaticsClasse.includes(cb.value));
+
+  // Bloqueia seleção se atingir limite
+  periciaCheckboxes.forEach(checkbox => {
+    if (!automaticsRaca.includes(checkbox.value) && !automaticsClasse.includes(checkbox.value)) {
+      checkbox.disabled = checked.length >= maxAllowed && !checkbox.checked;
+    }
+  });
 }
 
-// Adiciona event listeners aos checkboxes de perícias
+// Event listeners para atributos, raça e perícias
+atributoInputs.forEach(input => {
+  input.addEventListener('input', atualizarAtributos);
+});
 periciaCheckboxes.forEach(checkbox => {
   checkbox.addEventListener('change', atualizarPericias);
 });
-
-// Função para gerar o PDF usando jsPDF
-function gerarPDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-  
-    const nome = document.getElementById("nome").value;
-    const raca = document.getElementById("raca").value;
-    const classe = document.getElementById("classe").value;
-    const origem = document.getElementById("origem").value;
-  
-    const line = (txt, y) => { doc.text(txt, 10, y); return y + 8; };
-  
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(16);
-    let y = 15;
-    doc.text("Ficha RE:Zero RPG", 70, y);
-    y += 10;
-  
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "normal");
-    y = line(`Nome: ${nome}`, y);
-    y = line(`Raça: ${raca}    Classe: ${classe}    Origem: ${origem}`, y);
-  
-    // Atributos
-    y += 5;
-    doc.setFont("helvetica", "bold");
-    doc.text("Atributos", 10, y);
-    doc.setFont("helvetica", "normal");
-    y += 7;
-    atributoInputs.forEach(input => {
-      y = line(`${input.dataset.nome}: ${input.value}`, y);
-    });
-  
-    // Status
-    y += 5;
-    doc.setFont("helvetica", "bold");
-    doc.text("Status", 10, y);
-    doc.setFont("helvetica", "normal");
-    y += 7;
-    y = line(`HP: ${hpEl.textContent}`, y);
-    y = line(`Sanidade: ${sanidadeEl.textContent}`, y);
-    y = line(`Mana: ${manaCalcEl.textContent}`, y);
-  
-    // Perícias
-    y += 5;
-    const periciasSelecionadas = Array.from(document.querySelectorAll('#pericias input[type="checkbox"]:checked')).map(cb => cb.value);
-    if (periciasSelecionadas.length) {
-      doc.setFont("helvetica", "bold");
-      doc.text("Perícias", 10, y);
-      doc.setFont("helvetica", "normal");
-      y += 7;
-      let linha = "";
-      periciasSelecionadas.forEach((p, i) => {
-        linha += p + (i < periciasSelecionadas.length - 1 ? ", " : "");
-        if (linha.length > 80) {
-          y = line(linha, y);
-          linha = "";
-        }
-      });
-      if (linha) y = line(linha, y);
-    }
-  
-    // Magias selecionadas
-    // Magias selecionadas
-const magiasSelecionadas = Array.from(document.querySelectorAll('#magia-container .magia-select'))
-.map(sel => sel.value).filter(v => v !== '');
-if (magiasSelecionadas.length) {
-y += 5;
-doc.setFont("helvetica", "bold");
-doc.text("Magias Selecionadas", 10, y);
-doc.setFont("helvetica", "normal");
-y += 7;
-magiasSelecionadas.forEach(m => {
-  y = line(`- ${m}`, y);
-});
+if (racaSelect) {
+  racaSelect.addEventListener('change', atualizarPericias);
+}
+if (classeSelect) {
+  classeSelect.addEventListener('change', atualizarPericias);
 }
 
-  
-    // Equipamentos
-    const equipamentos = document.getElementById("equipamentos").value;
-    if (equipamentos.trim()) {
-      y += 5;
-      doc.setFont("helvetica", "bold");
-      doc.text("Equipamentos", 10, y);
-      doc.setFont("helvetica", "normal");
-      y += 7;
-      const lines = doc.splitTextToSize(equipamentos, 180);
-      lines.forEach(l => y = line(l, y));
-    }
-  
-    // Magias livres
-    const magiasLivres = document.getElementById("magias").value;
-    if (magiasLivres.trim()) {
-      y += 5;
-      doc.setFont("helvetica", "bold");
-      doc.text("Magias Extras", 10, y);
-      doc.setFont("helvetica", "normal");
-      y += 7;
-      const lines = doc.splitTextToSize(magiasLivres, 180);
-      lines.forEach(l => y = line(l, y));
-    }
-  
-    doc.save(`Ficha_${nome || "personagem"}.pdf`);
-  }
-  
-
-const magiasPrimeiroCirculo = [
-    "Buff Elemental",
-    "Armadura Elemental",
-    "Wind Arrow",
-    "Fura",
-    "Wind Bust",
-    "Dona",
-    "Dona Ataque",
-    "Earth Seal",
-    "Earth Sword",
-    "Tuch Rock",
-    "Fire Sword",
-    "Fire Territory",
-    "Goa",
-    "Artes de Gelo",
-    "Ice Crystal",
-    "Água Corrente",
-    "Magia de Cura",
-    "Lar do Lagarto Aquático",
-    "Levitação Corporal",
-    "Camuflagem das trevas",
-    "Shamak",
-    "Minya",
-    "Jiwald",
-    "Akra",
-    "Sabre de Luz"
-  ];
-
-let contadorMagias = 0;
-let contadorMagiasID = 0; // apenas pra ID única do elemento
-
-const magiasInfo = {
-    "Buff Elemental": "Custo: 3 mana | Efeito: +1 dado no elemento",
-    "Armadura Elemental": "Custo: 3 mana | Efeito: +1 resistência ao elemento",
-    "Wind Arrow": "Custo: 3 mana | Dano: 1d8 perfuração",
-    "Fura": "Custo: 3 mana | Dano: 2d4 corte",
-    "Wind Bust": "Custo: 3 mana | Efeito: +3m deslocamento",
-    "Dona": "Custo: 3 mana | Defesa: parede com 15 HP",
-    "Dona Ataque": "Custo: 3 mana | Dano: 1d6",
-    "Earth Seal": "Custo: 3 mana | Efeito: prende no chão (teste de Reflexos/Fortitude)",
-    "Earth Sword": "Custo: 3 mana | Dano: depende da arma",
-    "Tuch Rock": "Custo: 3 mana | Dano: 1d6",
-    "Fire Sword": "Custo: 3 mana | Dano: 1d4 + queimadura",
-    "Fire Territory": "Custo: 3 mana | Área: queimadura por 3 turnos",
-    "Goa": "Custo: 3 mana | Dano: 1d4 (par = queimadura)",
-    "Artes de Gelo": "Custo: 3 mana | Dano: 1d6 + 1d4",
-    "Ice Crystal": "Custo: 3 mana | Dano: 1d4 (par = queimadura)",
-    "Água Corrente": "Custo: 3 mana | Cura: 1d4 por 1d4+1 turnos",
-    "Magia de Cura": "Custo: 3 mana | Cura: 1d8",
-    "Lar do Lagarto Aquático": "Custo: 3 mana | Defesa: 15 HP de água",
-    "Levitação Corporal": "Custo: 3 mana | Efeito: levitação (2m)",
-    "Camuflagem das trevas": "Custo: 3 mana | Efeito: corta o invisível/atravessa objetos",
-    "Shamak": "Custo: 3 mana | Efeito: inimigo perde visão ou audição (1d3 turnos)",
-    "Minya": "Custo: 3 mana | Dano: 1d6 + 1d4",
-    "Jiwald": "Custo: 3 mana | Dano: 1d8 luz",
-    "Akra": "Custo: 3 mana | Efeito: objeto mais leve",
-    "Sabre de Luz": "Custo: 3 mana | Dano: 1d10"
-  };
-  
-  function atualizarPreviewMagia(select) {
-    const container = select.closest('.magia-select-group');
-    const preview = container.querySelector('.preview-magia');
-    const magia = select.value;
-    preview.textContent = magiasInfo[magia] || "";
-  }
-  
-
-function adicionarCampoMagia(valor = "") {
-    contadorMagias++;
-    const container = document.getElementById('magia-container');
-  
-    const div = document.createElement('div');
-    div.classList.add('magia-select-group');
-    div.innerHTML = `
-      <label for="magia-${contadorMagias}">Magia ${contadorMagias}:</label>
-      <div class="magia-row">
-        <select id="magia-${contadorMagias}" name="magiasSelecionadas" class="magia-select" onchange="atualizarPreviewMagia(this)">
-          <option value="">Selecione...</option>
-          ${magiasPrimeiroCirculo.map(m => `<option value="${m}">${m}</option>`).join('')}
-        </select>
-        <button type="button" class="remover-magia" onclick="removerMagia(this)">✖</button>
+// Preview em tempo real
+function atualizarPreview() {
+  const previewEl = document.getElementById('ficha-preview');
+  const nome = document.getElementById('nome')?.value || "";
+  const idade = document.getElementById('idade')?.value || "";
+  const sexo = document.getElementById('sexo')?.value || "";
+  const raca = racaSelect ? racaSelect.value : "";
+  const classe = classeSelect ? classeSelect.value : "";
+  const origem = document.getElementById('origem')?.value || "";
+  let html = `
+    <h3>Preview da Ficha</h3>
+    <div class="preview-content">
+      <p><strong>Nome:</strong> ${nome || '-'}</p>
+      <p><strong>Idade:</strong> ${idade || '-'}</p>
+      <p><strong>Sexo:</strong> ${sexo || '-'}</p>
+      <p><strong>Raça:</strong> ${raca || '-'}</p>
+      <p><strong>Classe:</strong> ${classe || '-'}</p>
+      <p><strong>Origem:</strong> ${origem || '-'}</p>
+      <h4>Atributos</h4>
+      <div class="preview-atributos">
+  `;
+  atributoInputs.forEach(input => {
+    const label = document.querySelector(`label[for="${input.id}"]`);
+    html += `<p><strong>${label ? label.textContent : input.id}:</strong> ${input.value}</p>`;
+  });
+  html += `
       </div>
-      <div class="preview-magia" style="font-size: 0.9em; color: #aaa; margin-top: 4px;"></div>
+      <h4>Status</h4>
+      <p><strong>Pontos Restantes:</strong> ${pontosRestantesEl?.textContent || '-'}</p>
+      <p><strong>HP:</strong> ${hpEl?.textContent || '-'}</p>
+      <p><strong>Sanidade:</strong> ${sanidadeEl?.textContent || '-'}</p>
+      <p><strong>Mana:</strong> ${manaCalcEl?.textContent || '-'}</p>
+      <h4>Perícias</h4>
+      <ul>
+        ${
+          Array.from(periciaCheckboxes)
+            .filter(cb => cb.checked)
+            .map(cb => {
+              if (cb.value === "Arma") {
+                const armaTipo = cb.parentElement.querySelector('.arma-tipo');
+                return `<li>Arma (${armaTipo ? armaTipo.value : ""})</li>`;
+              }
+              return `<li>${cb.value}</li>`;
+            })
+            .join('')
+        }
+      </ul>
+      <h4>Equipamentos</h4>
+      <p>${document.getElementById("equipamentos")?.value || '-'}</p>
+      <h4>Magias Selecionadas</h4>
+      <ul>
+        ${
+          Array.from(document.querySelectorAll('.magia-select'))
+            .map(sel => sel.value)
+            .filter(v => v)
+            .map(v => `<li>${v}</li>`)
+            .join('')
+        }
+      </ul>
+      <h4>Magias Extras</h4>
+      <p>${document.getElementById("magias")?.value || '-'}</p>
+      <h4>Bençãos</h4>
+      <p>${document.getElementById("bencaos")?.value || '-'}</p>
+      <h4>Defeitos</h4>
+      <p>${document.getElementById("defeitos")?.value || '-'}</p>
+      <h4>Inventário</h4>
+      <ul>
+        ${
+          inventario.length
+            ? inventario.map(item => `<li>${item.nome} x${item.quantidade}</li>`).join('')
+            : '<li>Nenhum item no inventário.</li>'
+        }
+      </ul>
+    </div>
+  `;
+  previewEl.innerHTML = html;
+}
+
+// Atualiza preview em qualquer campo
+document.querySelectorAll('input, select, textarea').forEach(el => {
+  el.addEventListener('input', atualizarPreview);
+});
+
+// Magias dinâmicas
+function adicionarCampoMagia(valor = "") {
+  const container = document.getElementById('magia-container');
+  const div = document.createElement('div');
+  div.classList.add('magia-select-group');
+  div.innerHTML = `
+    <label>Magia:</label>
+    <select class="magia-select">
+      <option value="">Selecione...</option>
+      <option>Buff Elemental</option>
+      <option>Armadura Elemental</option>
+      <option>Wind Arrow</option>
+      <option>Fura</option>
+      <option>Wind Bust</option>
+      <option>Dona</option>
+      <option>Dona Ataque</option>
+      <option>Earth Seal</option>
+      <option>Earth Sword</option>
+      <option>Tuch Rock</option>
+      <option>Fire Sword</option>
+      <option>Fire Territory</option>
+      <option>Goa</option>
+      <option>Artes de Gelo</option>
+      <option>Ice Crystal</option>
+      <option>Água Corrente</option>
+      <option>Magia de Cura</option>
+      <option>Lar do Lagarto Aquático</option>
+      <option>Levitação Corporal</option>
+      <option>Camuflagem das trevas</option>
+      <option>Shamak</option>
+      <option>Minya</option>
+      <option>Jiwald</option>
+      <option>Akra</option>
+      <option>Sabre de Luz</option>
+    </select>
+    <button type="button" onclick="this.parentElement.remove()">✖</button>
+  `;
+  container.appendChild(div);
+  if (valor) div.querySelector('select').value = valor;
+}
+
+// --- Inventário ---
+let inventario = [];
+
+function atualizarInventario() {
+  const lista = document.getElementById('inventario-list');
+  lista.innerHTML = "";
+  if (inventario.length === 0) {
+    lista.innerHTML = "<p>Nenhum item no inventário.</p>";
+    return;
+  }
+  inventario.forEach((item, idx) => {
+    lista.innerHTML += `
+      <div class="inventario-item">
+        <div style="display:flex;align-items:center;gap:10px;">
+          ${item.miniatura ? `<img src="${item.miniatura}" alt="Miniatura" style="width:32px;height:32px;border-radius:4px;border:1px solid #bbb;">` : ''}
+          <span><strong>${item.nome}</strong> x${item.quantidade} <small>(Espaço: ${item.espaco})</small></span>
+        </div>
+        <div style="flex:1;">
+          <span style="color:#666;font-size:0.95em;">${item.descricao || ''}</span>
+        </div>
+        <button type="button" onclick="removerItemInventario(${idx})">🗑️</button>
+      </div>
     `;
-  
-    container.appendChild(div);
-  
-    // Se veio pré-carregada
-    if (valor) {
-      const select = div.querySelector("select");
-      select.value = valor;
-      atualizarPreviewMagia(select);
-    }
-  }
-  
+  });
+}
 
-  function removerMagia(botao) {
-    const linha = botao.closest('.magia-select-group');
-    if (linha) {
-      linha.remove();
-      atualizarNumeracaoMagias();
-    }
-  }
+function adicionarItemInventario() {
+  const nome = document.getElementById('item-nome').value.trim();
+  const quantidade = parseInt(document.getElementById('item-quantidade').value) || 1;
+  const espaco = parseInt(document.getElementById('item-espaco').value) || 1;
+  const descricao = document.getElementById('item-descricao').value.trim();
+  const miniaturaInput = document.getElementById('item-miniatura');
+  let miniatura = "";
 
-  function atualizarNumeracaoMagias() {
-    const grupos = document.querySelectorAll('.magia-select-group');
-    grupos.forEach((grupo, index) => {
-      const label = grupo.querySelector('label');
-      if (label) {
-        label.textContent = `Magia ${index + 1}:`;
-      }
-    });
-  }  
-  
-function salvarJSON() {
-    const ficha = {
-      nome: document.getElementById("nome").value,
-      raca: document.getElementById("raca").value,
-      classe: document.getElementById("classe").value,
-      origem: document.getElementById("origem").value,
-      atributos: {},
-      pericias: [],
-      equipamentos: document.getElementById("equipamentos").value,
-      magiasLivres: document.getElementById("magias").value,
-      magiasSelecionadas: []
-    };
-  
-    // Atributos
-    atributoInputs.forEach(input => {
-      ficha.atributos[input.dataset.nome] = input.value;
-    });
-  
-    // Perícias
-    document.querySelectorAll('#pericias input[type="checkbox"]:checked').forEach(cb => {
-      ficha.pericias.push(cb.value);
-    });
-  
-    // Magias selecionadas
-    document.querySelectorAll('.magia-select').forEach(select => {
-      if (select.value) ficha.magiasSelecionadas.push(select.value);
-    });
-  
-    const blob = new Blob([JSON.stringify(ficha, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `Ficha_${ficha.nome || "personagem"}.json`;
-    a.click();
-  }
-  
-  function carregarJSON() {
-    const fileInput = document.getElementById("inputJson");
-    const file = fileInput.files[0];
-    if (!file) return;
-  
+  if (!nome) return;
+
+  if (miniaturaInput.files && miniaturaInput.files[0]) {
     const reader = new FileReader();
     reader.onload = function (e) {
-      const dados = JSON.parse(e.target.result);
-  
-      document.getElementById("nome").value = dados.nome || "";
-      document.getElementById("raca").value = dados.raca || "";
-      document.getElementById("classe").value = dados.classe || "";
-      document.getElementById("origem").value = dados.origem || "";
-  
-      // Atributos
-      for (const nome in dados.atributos) {
-        const input = Array.from(atributoInputs).find(i => i.dataset.nome === nome);
-        if (input) input.value = dados.atributos[nome];
-      }
-  
-      // Perícias
-      document.querySelectorAll('#pericias input[type="checkbox"]').forEach(cb => {
-        cb.checked = dados.pericias.includes(cb.value);
-      });
-  
-      // Equipamentos e magias livres
-      document.getElementById("equipamentos").value = dados.equipamentos || "";
-      document.getElementById("magias").value = dados.magiasLivres || "";
-  
-      // Magias Selecionadas
-      document.getElementById("magia-container").innerHTML = "";
-      dados.magiasSelecionadas.forEach(magia => {
-        adicionarCampoMagia();
-        const selects = document.querySelectorAll('.magia-select');
-        selects[selects.length - 1].value = magia;
-      });
-  
-      atualizarAtributos();
+      miniatura = e.target.result;
+      inventario.push({ nome, quantidade, espaco, descricao, miniatura });
+      atualizarInventario();
+      limparCamposInventario();
     };
-    reader.readAsText(file);
+    reader.readAsDataURL(miniaturaInput.files[0]);
+  } else {
+    inventario.push({ nome, quantidade, espaco, descricao, miniatura: "" });
+    atualizarInventario();
+    limparCamposInventario();
   }
-  
+}
+
+function limparCamposInventario() {
+  document.getElementById('item-nome').value = "";
+  document.getElementById('item-quantidade').value = 1;
+  document.getElementById('item-espaco').value = 1;
+  document.getElementById('item-miniatura').value = "";
+  document.getElementById('item-descricao').value = "";
+}
+
+function removerItemInventario(idx) {
+  inventario.splice(idx, 1);
+  atualizarInventario();
+}
+
+// Salvar JSON
+function salvarJSON() {
+  const ficha = {
+    nome: document.getElementById("nome")?.value || "",
+    idade: document.getElementById("idade")?.value || "",
+    raca: racaSelect?.value || "",
+    classe: classeSelect?.value || "",
+    origem: document.getElementById("origem")?.value || "",
+    sexo: document.getElementById("sexo")?.value || "",
+    atributos: {},
+    pontosRestantes: pontosRestantesEl?.textContent || "",
+    hp: hpEl?.textContent || "",
+    sanidade: sanidadeEl?.textContent || "",
+    mana: manaCalcEl?.textContent || "",
+    pericias: [],
+    equipamentos: document.getElementById("equipamentos")?.value || "",
+    magiasLivres: document.getElementById("magias")?.value || "",
+    magiasSelecionadas: [],
+    bencaos: document.getElementById("bencaos")?.value || "",
+    defeitos: document.getElementById("defeitos")?.value || "",
+    inventario: inventario.slice(),
+    preview: document.getElementById("ficha-preview")?.innerHTML || ""
+  };
+  atributoInputs.forEach(input => {
+    ficha.atributos[input.id] = input.value;
+  });
+  periciaCheckboxes.forEach(cb => {
+    if (cb.checked) {
+      if (cb.value === "Arma") {
+        const armaTipo = cb.parentElement.querySelector('.arma-tipo');
+        ficha.pericias.push({
+          nome: cb.value,
+          tipo: armaTipo ? armaTipo.value : ""
+        });
+      } else {
+        ficha.pericias.push(cb.value);
+      }
+    }
+  });
+  document.querySelectorAll('.magia-select').forEach(select => {
+    if (select.value) ficha.magiasSelecionadas.push(select.value);
+  });
+  const blob = new Blob([JSON.stringify(ficha, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `Ficha_${ficha.nome || "personagem"}.json`;
+  a.click();
+}
+
+// Carregar JSON
+function carregarJSON() {
+  const fileInput = document.getElementById("inputJson");
+  const file = fileInput.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    const dados = JSON.parse(e.target.result);
+
+    document.getElementById("nome").value = dados.nome || "";
+    document.getElementById("idade").value = dados.idade || "";
+    if (racaSelect) racaSelect.value = dados.raca || "";
+    if (classeSelect) classeSelect.value = dados.classe || "";
+    document.getElementById("classe").value = dados.classe || "";
+    document.getElementById("origem").value = dados.origem || "";
+    document.getElementById("sexo").value = dados.sexo || "";
+
+    for (const nome in dados.atributos) {
+      const input = document.getElementById(nome);
+      if (input) input.value = dados.atributos[nome];
+    }
+
+    periciaCheckboxes.forEach(cb => {
+      cb.checked = false;
+      if (cb.value === "Arma") {
+        const armaObj = dados.pericias.find(p => typeof p === "object" && p.nome === "Arma");
+        cb.checked = !!armaObj;
+        const armaTipo = cb.parentElement.querySelector('.arma-tipo');
+        if (armaTipo && armaObj) armaTipo.value = armaObj.tipo || "";
+      } else {
+        cb.checked = dados.pericias.includes(cb.value);
+      }
+    });
+
+    document.getElementById("equipamentos").value = dados.equipamentos || "";
+    document.getElementById("magias").value = dados.magiasLivres || "";
+    document.getElementById("bencaos").value = dados.bencaos || "";
+    document.getElementById("defeitos").value = dados.defeitos || "";
+
+    document.getElementById("magia-container").innerHTML = "";
+    (dados.magiasSelecionadas || []).forEach(magia => adicionarCampoMagia(magia));
+
+    inventario = Array.isArray(dados.inventario) ? dados.inventario : [];
+    atualizarInventario();
+
+    if (pontosRestantesEl) pontosRestantesEl.textContent = dados.pontosRestantes || "";
+    if (hpEl) hpEl.textContent = dados.hp || "";
+    if (sanidadeEl) sanidadeEl.textContent = dados.sanidade || "";
+    if (manaCalcEl) manaCalcEl.textContent = dados.mana || "";
+
+    atualizarAtributos();
+    atualizarPreview();
+  };
+  reader.readAsText(file);
+}
+
+// PDF
+function gerarPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  const nome = document.getElementById("nome")?.value || "";
+  const raca = racaSelect?.value || "";
+  const classe = classeSelect?.value || "";
+  const origem = document.getElementById("origem")?.value || "";
+  const idade = document.getElementById("idade")?.value || "";
+  const sexo = document.getElementById("sexo")?.value || "";
+  let y = 15;
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(16);
+  doc.text("Ficha RE:Zero RPG", 70, y);
+  y += 10;
+  doc.setFontSize(12);
+  doc.setFont("helvetica", "normal");
+  doc.text(`Nome: ${nome}`, 10, y); y += 7;
+  doc.text(`Idade: ${idade}    Sexo: ${sexo}`, 10, y); y += 7;
+  doc.text(`Raça: ${raca}    Classe: ${classe}    Origem: ${origem}`, 10, y); y += 7;
+  doc.text("Atributos", 10, y); y += 7;
+  atributoInputs.forEach(input => {
+    const label = document.querySelector(`label[for="${input.id}"]`);
+    doc.text(`${label ? label.textContent : input.id}: ${input.value}`, 10, y); y += 7;
+  });
+  doc.text("Status", 10, y); y += 7;
+  doc.text(`HP: ${hpEl.textContent}`, 10, y); y += 7;
+  doc.text(`Sanidade: ${sanidadeEl.textContent}`, 10, y); y += 7;
+  doc.text(`Mana: ${manaCalcEl.textContent}`, 10, y); y += 7;
+  const periciasSelecionadas = [];
+  periciaCheckboxes.forEach(cb => {
+    if (cb.checked) {
+      if (cb.value === "Arma") {
+        const armaTipo = cb.parentElement.querySelector('.arma-tipo');
+        periciasSelecionadas.push(`Arma (${armaTipo ? armaTipo.value : ""})`);
+      } else {
+        periciasSelecionadas.push(cb.value);
+      }
+    }
+  });
+  if (periciasSelecionadas.length) {
+    doc.text("Perícias", 10, y); y += 7;
+    doc.text(periciasSelecionadas.join(", "), 10, y); y += 7;
+  }
+  const magiasSelecionadas = Array.from(document.querySelectorAll('.magia-select')).map(sel => sel.value).filter(v => v !== '');
+  if (magiasSelecionadas.length) {
+    doc.text("Magias Selecionadas", 10, y); y += 7;
+    magiasSelecionadas.forEach(m => { doc.text(`- ${m}`, 10, y); y += 7; });
+  }
+  const equipamentos = document.getElementById("equipamentos")?.value || "";
+  if (equipamentos.trim()) {
+    doc.text("Equipamentos", 10, y); y += 7;
+    doc.text(equipamentos, 10, y); y += 7;
+  }
+  const magiasLivres = document.getElementById("magias")?.value || "";
+  if (magiasLivres.trim()) {
+    doc.text("Magias Extras", 10, y); y += 7;
+    doc.text(magiasLivres, 10, y); y += 7;
+  }
+  const bencaos = document.getElementById("bencaos")?.value || "";
+  if (bencaos.trim()) {
+    doc.text("Bençãos", 10, y); y += 7;
+    doc.text(bencaos, 10, y); y += 7;
+  }
+  const defeitos = document.getElementById("defeitos")?.value || "";
+  if (defeitos.trim()) {
+    doc.text("Defeitos", 10, y); y += 7;
+    doc.text(defeitos, 10, y); y += 7;
+  }
+  if (inventario.length) {
+    doc.text("Inventário", 10, y); y += 7;
+    inventario.forEach(item => {
+      doc.text(`- ${item.nome} x${item.quantidade}`, 10, y); y += 7;
+    });
+  }
+  doc.save(`Ficha_${nome || "personagem"}.pdf`);
+}
+
+// Inicialização
+document.addEventListener('DOMContentLoaded', () => {
+  atualizarAtributos();
+  atualizarPreview();
+  atualizarInventario();
+});
