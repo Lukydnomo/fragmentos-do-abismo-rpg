@@ -43,7 +43,9 @@
                 id="expressaoDado"
                 placeholder="Digite uma rolagem (ex: 1d20+3)"
               />
-              <button type="button" id="rolarDado">🎲 Rolar</button>
+              <button type="button" id="rolarDado">
+                <img src="../images/dice-icon.png" alt="" style="width: 16px" />
+              </button>
             </div>
 
             <div id="resultadoRolagem"></div>
@@ -145,77 +147,306 @@
             </div>
           </section>
 
-          <section id="atributos-section" class="card">
+          <section
+            id="atributos-section"
+            class="card"
+            style="position: relative"
+          >
             <h2>
               Atributos <span class="info">(15 pontos para distribuir)</span>
             </h2>
-            <div class="atributos-grid">
-              <div class="atributo">
-                <label for="forca">Força:</label
-                ><input
+            <button
+              id="toggle-edicao-atributos"
+              type="button"
+              style="
+                position: absolute;
+                right: 20px;
+                top: 15px;
+                background-color: transparent;
+                border: none;
+                padding: 6px 12px;
+                border-radius: 6px;
+                cursor: pointer;
+                transition: 0.2s;
+              "
+              aria-label="Editar atributos"
+            >
+              <!-- SVG inicial (pencil) -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="white"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71
+             7.04a1.003 1.003 0 0 0 0-1.42l-2.34-2.34a1.003
+             1.003 0 0 0-1.42 0l-1.83 1.83 3.75
+             3.75 1.84-1.82z"
+                />
+              </svg>
+            </button>
+
+            <!-- 🔹 Roda de atributos SVG -->
+            <div
+              id="roda-atributos"
+              style="display: flex; justify-content: center; margin: 20px 0"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="600"
+                height="600"
+                viewBox="0 0 800 800"
+              >
+                <defs>
+                  <style>
+                    .bg {
+                      fill: #0b0b0b00;
+                    }
+                    .ring {
+                      fill: none;
+                      stroke: #ffffff;
+                      stroke-width: 8;
+                      opacity: 0.8;
+                    }
+                    .connector {
+                      stroke: #ffffff;
+                      stroke-width: 5;
+                      stroke-linecap: round;
+                      opacity: 0.8;
+                    }
+                    .outer {
+                      fill: none;
+                      stroke: #ffffff;
+                      stroke-width: 5;
+                    }
+                    .outer-fill {
+                      fill: rgba(255, 255, 255, 0.03);
+                    }
+                    .val-circle {
+                      fill: #0b0b0b;
+                      stroke: #ffffff;
+                      stroke-width: 3;
+                    }
+                    .val-text {
+                      font-family: "Cinzel", serif;
+                      font-size: 24px;
+                      fill: #ffffff;
+                      text-anchor: middle;
+                      dominant-baseline: central;
+                    }
+                    .abbr {
+                      font-family: "Cinzel", serif;
+                      font-weight: 700;
+                      font-size: 28px;
+                      fill: #ffffff;
+                      text-anchor: middle;
+                    }
+                    .fullname {
+                      font-family: "Cinzel", serif;
+                      font-size: 13px;
+                      fill: #ffffff;
+                      text-anchor: middle;
+                      opacity: 0.9;
+                    }
+                  </style>
+                </defs>
+
+                <rect class="bg" x="0" y="0" width="800" height="800" />
+                <g transform="translate(400,400)">
+                  <circle class="ring" r="140" />
+                  <circle class="ring" r="100" />
+                  <circle class="ring" r="60" />
+                  <circle
+                    cx="0"
+                    cy="0"
+                    r="50"
+                    fill="#0b0b0b"
+                    stroke="#ffffff"
+                    stroke-width="4"
+                  />
+                </g>
+
+                <!-- === Atributos === -->
+                <g id="grp-FOR">
+                  <line class="connector" x1="400" y1="400" x2="400" y2="210" />
+                  <circle class="outer-fill" cx="400" cy="150" r="60" />
+                  <circle class="outer" cx="400" cy="150" r="60" />
+                  <circle class="val-circle" cx="400" cy="110" r="22" />
+                  <text id="val-FOR" class="val-text" x="400" y="110">1</text>
+                  <text class="abbr" x="400" y="160">FOR</text>
+                  <text class="fullname" x="400" y="178">Força</text>
+                </g>
+
+                <g id="grp-AGI">
+                  <line
+                    class="connector"
+                    x1="400"
+                    y1="400"
+                    x2="533.78"
+                    y2="266.22"
+                  />
+                  <circle class="outer-fill" cx="576.78" cy="223.22" r="60" />
+                  <circle class="outer" cx="576.78" cy="223.22" r="60" />
+                  <circle class="val-circle" cx="576.78" cy="183.22" r="22" />
+                  <text id="val-AGI" class="val-text" x="576.78" y="183.22">
+                    1
+                  </text>
+                  <text class="abbr" x="576.78" y="233.22">AGI</text>
+                  <text class="fullname" x="576.78" y="251.22">Agilidade</text>
+                </g>
+
+                <g id="grp-CAR">
+                  <line class="connector" x1="400" y1="400" x2="590" y2="400" />
+                  <circle class="outer-fill" cx="650" cy="400" r="60" />
+                  <circle class="outer" cx="650" cy="400" r="60" />
+                  <circle class="val-circle" cx="650" cy="360" r="22" />
+                  <text id="val-CAR" class="val-text" x="650" y="360">1</text>
+                  <text class="abbr" x="650" y="410">CAR</text>
+                  <text class="fullname" x="650" y="428">Carisma</text>
+                </g>
+
+                <g id="grp-INT">
+                  <line
+                    class="connector"
+                    x1="400"
+                    y1="400"
+                    x2="532.78"
+                    y2="532.78"
+                  />
+                  <circle class="outer-fill" cx="576.78" cy="576.78" r="60" />
+                  <circle class="outer" cx="576.78" cy="576.78" r="60" />
+                  <circle class="val-circle" cx="576.78" cy="536.78" r="22" />
+                  <text id="val-INT" class="val-text" x="576.78" y="536.78">
+                    1
+                  </text>
+                  <text class="abbr" x="576.78" y="586.78">INT</text>
+                  <text class="fullname" x="576.78" y="604.78">
+                    Inteligência
+                  </text>
+                </g>
+
+                <g id="grp-MAN">
+                  <line class="connector" x1="400" y1="400" x2="400" y2="620" />
+                  <circle class="outer-fill" cx="400" cy="650" r="60" />
+                  <circle class="outer" cx="400" cy="650" r="60" />
+                  <circle class="val-circle" cx="400" cy="610" r="22" />
+                  <text id="val-MAN" class="val-text" x="400" y="610">1</text>
+                  <text class="abbr" x="400" y="660">MAN</text>
+                  <text class="fullname" x="400" y="678">Mana</text>
+                </g>
+
+                <g id="grp-RES">
+                  <line
+                    class="connector"
+                    x1="400"
+                    y1="400"
+                    x2="266.22"
+                    y2="533.78"
+                  />
+                  <circle class="outer-fill" cx="223.22" cy="576.78" r="60" />
+                  <circle class="outer" cx="223.22" cy="576.78" r="60" />
+                  <circle class="val-circle" cx="223.22" cy="536.78" r="22" />
+                  <text id="val-RES" class="val-text" x="223.22" y="536.78">
+                    1
+                  </text>
+                  <text class="abbr" x="223.22" y="586.78">RES</text>
+                  <text class="fullname" x="223.22" y="604.78">
+                    Resistência
+                  </text>
+                </g>
+
+                <g id="grp-SOR">
+                  <line class="connector" x1="400" y1="400" x2="210" y2="400" />
+                  <circle class="outer-fill" cx="150" cy="400" r="60" />
+                  <circle class="outer" cx="150" cy="400" r="60" />
+                  <circle class="val-circle" cx="150" cy="360" r="22" />
+                  <text id="val-SOR" class="val-text" x="150" y="360">1</text>
+                  <text class="abbr" x="150" y="410">SOR</text>
+                  <text class="fullname" x="150" y="428">Sorte</text>
+                </g>
+
+                <g id="grp-DET">
+                  <line
+                    class="connector"
+                    x1="400"
+                    y1="400"
+                    x2="265.22"
+                    y2="265.22"
+                  />
+                  <circle class="outer-fill" cx="223.22" cy="223.22" r="60" />
+                  <circle class="outer" cx="223.22" cy="223.22" r="60" />
+                  <circle class="val-circle" cx="223.22" cy="183.22" r="22" />
+                  <text id="val-DET" class="val-text" x="223.22" y="183.22">
+                    1
+                  </text>
+                  <text class="abbr" x="223.22" y="233.22">DET</text>
+                  <text class="fullname" x="223.22" y="251.22">Detecção</text>
+                </g>
+              </svg>
+            </div>
+
+            <!-- 🔹 Inputs originais (mantidos para compatibilidade, ocultos visualmente) -->
+            <div class="atributos-grid" style="display: none">
+              <div>
+                <input
                   type="number"
                   id="forca"
                   class="atributo-input"
                   value="1"
                 />
               </div>
-              <div class="atributo">
-                <label for="agilidade">Agilidade:</label
-                ><input
+              <div>
+                <input
                   type="number"
                   id="agilidade"
                   class="atributo-input"
                   value="1"
                 />
               </div>
-              <div class="atributo">
-                <label for="carisma">Carisma:</label
-                ><input
+              <div>
+                <input
                   type="number"
                   id="carisma"
                   class="atributo-input"
                   value="1"
                 />
               </div>
-              <div class="atributo">
-                <label for="inteligencia">Inteligência:</label
-                ><input
+              <div>
+                <input
                   type="number"
                   id="inteligencia"
                   class="atributo-input"
                   value="1"
                 />
               </div>
-              <div class="atributo">
-                <label for="manaAttr">Mana:</label
-                ><input
+              <div>
+                <input
                   type="number"
                   id="manaAttr"
                   class="atributo-input"
                   value="1"
                 />
               </div>
-              <div class="atributo">
-                <label for="resistencia">Resistência:</label
-                ><input
+              <div>
+                <input
                   type="number"
                   id="resistencia"
                   class="atributo-input"
                   value="1"
                 />
               </div>
-              <div class="atributo">
-                <label for="sorte">Sorte:</label
-                ><input
+              <div>
+                <input
                   type="number"
                   id="sorte"
                   class="atributo-input"
                   value="1"
                 />
               </div>
-              <div class="atributo">
-                <label for="deteccao">Detecção:</label
-                ><input
+              <div>
+                <input
                   type="number"
                   id="deteccao"
                   class="atributo-input"
@@ -223,7 +454,10 @@
                 />
               </div>
             </div>
-            <p>Pontos restantes: <span id="pontos-restantes">15</span></p>
+
+            <p style="text-align: center; margin-top: 10px">
+              Pontos restantes: <span id="pontos-restantes">15</span>
+            </p>
           </section>
 
           <section id="pericias-section" class="card">

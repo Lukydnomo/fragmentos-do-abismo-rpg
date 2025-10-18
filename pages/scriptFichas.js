@@ -8,6 +8,11 @@ const periciaCheckboxes = document.querySelectorAll('#pericias input[type="check
 const racaSelect = document.getElementById('raca');
 const classeSelect = document.getElementById('classe');
 
+function playSound(url) {
+  const roll_dice_sound_effect = new Audio(url);
+  roll_dice_sound_effect.play();
+}
+
 // Mapeamento de perícias automáticas por raça
 const periciasRaca = {
   "Humano": [],
@@ -27,11 +32,11 @@ const periciasRaca = {
 
 // Mapeamento de bônus de perícias extras por raça
 const periciasExtrasRaca = {
-  "Humano": 2,
-  "Demi-Humano": 2,
+  "Humano": 0,
+  "Demi-Humano": 0,
   "Semi-Humano": 0,
   "Lobisomem": 0,
-  "Demônio/Oni": 0,
+  "Demônio/Oni": 1,
   "Elfo": 0,
   "Vampiro ou Bonecos Amaldiçoado": 0,
   "Triclope": 0,
@@ -459,13 +464,6 @@ function adicionarItemInventario() {
   else if (forca >= 16 && forca <= 20) limitePeso = 120;
   else if (forca > 20) limitePeso = 120 + (forca - 20) * 20;
 
-  const pesoNovoItem = espaco * quantidade;
-
-  if (pesoAtual + pesoNovoItem > limitePeso) {
-    alert(`⚠️ Você não pode carregar tanto peso!\n\nPeso atual: ${pesoAtual}\nTentaria adicionar: ${pesoNovoItem}\nLimite: ${limitePeso}`);
-    return;
-  }
-
   if (miniaturaInput.files && miniaturaInput.files[0]) {
     const reader = new FileReader();
     reader.onload = function (e) {
@@ -816,7 +814,6 @@ function gerarPDF() {
   doc.save(`Ficha_${nome.replace(/\s+/g, "_")}.pdf`);
 }
 
-
 // ===== ⚙️ CONFIGURAÇÕES =====
 const MAX_DICE_GROUP = 100;
 const MAX_FACES = 1000;
@@ -922,6 +919,7 @@ function rolarDado() {
   } catch (err) {
     criarNotificacao("❌ Erro na Rolagem", err.message, "—");
   }
+  playSound("../images/roll_dice.mp3");
 }
 
 // ===== 🚀 INICIALIZAÇÃO =====
@@ -1016,14 +1014,14 @@ function rolarPericia(nomePericia) {
 
   const resultadoFinal = resultadoBase + bonus;
 
+  playSound("../images/roll_dice.mp3");
   // ===== 🧾 Exibe notificação =====
   criarNotificacao(
     `${nomePericia} (${periciaTreinada ? "Treinada" : "Não Treinada"})`,
-    `[${resultados.join(", ")}] ${modo === "melhor" ? "→ melhor dado" : "→ pior dado"} +${bonus}`,
+    `[${resultados.join(", ")}] ${modo === "melhor" ? "→" : "→"} +${bonus}`,
     resultadoFinal
   );
 }
-
 
 // ===== 🧷 Adiciona os botões de rolar =====
 document.addEventListener("DOMContentLoaded", () => {
@@ -1057,6 +1055,101 @@ document.addEventListener("DOMContentLoaded", () => {
 document.querySelectorAll('.bar-btn').forEach(btn => {
   btn.addEventListener('click', ev => ev.preventDefault());
 });
+
+// ===== 🧩 Sincronização de atributos com SVG =====
+document.querySelectorAll(".atributo-input").forEach((input) => {
+  input.addEventListener("input", () => {
+    const mapa = {
+      forca: "val-FOR",
+      agilidade: "val-AGI",
+      carisma: "val-CAR",
+      inteligencia: "val-INT",
+      manaAttr: "val-MAN",
+      resistencia: "val-RES",
+      sorte: "val-SOR",
+      deteccao: "val-DET",
+    };
+    const alvoId = mapa[input.id];
+    if (alvoId) {
+      const t = document.getElementById(alvoId);
+      if (t) t.textContent = input.value || "1";
+    }
+  });
+});
+
+// ===== 🛠️ Alternar modo de edição de atributos no SVG =====
+(() => {
+  const btn = document.getElementById("toggle-edicao-atributos");
+  const inputs = document.querySelectorAll(".atributo-input");
+  const mapa = {
+    forca: "val-FOR",
+    agilidade: "val-AGI",
+    carisma: "val-CAR",
+    inteligencia: "val-INT",
+    manaAttr: "val-MAN",
+    resistencia: "val-RES",
+    sorte: "val-SOR",
+    deteccao: "val-DET",
+  };
+  let modoEdicao = false;
+
+  if (!btn) return; // evita erro se o botão não existir ainda
+
+  btn.addEventListener("click", () => {
+  modoEdicao = !modoEdicao;
+
+  // Define os SVGs inline
+  const svgPencil = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+      <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71
+               7.04a1.003 1.003 0 0 0 0-1.42l-2.34-2.34a1.003
+               1.003 0 0 0-1.42 0l-1.83 1.83 3.75
+               3.75 1.84-1.82z"/>
+    </svg>`;
+
+  const svgCheck = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="rgba(255, 255, 255, 1)" viewBox="0 0 24 24">
+      <path d="M9 16.17L4.83 12l-1.42
+               1.41L9 19l12-12-1.41-1.41z"/>
+    </svg>`;
+
+  // Alterna ícone e cor de fundo
+  btn.innerHTML = modoEdicao ? svgCheck : svgPencil;
+  btn.style.background = modoEdicao ? "rgba(72, 187, 120, 0)" : "transparent";
+
+  // Lógica de ativar edição
+  Object.entries(mapa).forEach(([idInput, idText]) => {
+    const t = document.getElementById(idText);
+    if (!t) return;
+    if (modoEdicao) {
+      t.style.cursor = "pointer";
+      t.addEventListener("click", editarValor);
+    } else {
+      t.style.cursor = "default";
+      t.removeEventListener("click", editarValor);
+    }
+  });
+});
+
+  function editarValor(e) {
+    const target = e.target;
+    const idSvg = target.id;
+    const inputId = Object.keys(mapa).find((k) => mapa[k] === idSvg);
+    const input = document.getElementById(inputId);
+    if (!input) return;
+
+    const valorAtual = input.value || 1;
+    const novo = prompt(
+      `Novo valor para ${inputId.replace(/Attr/, "")}:`,
+      valorAtual
+    );
+    if (novo !== null && !isNaN(parseInt(novo))) {
+      input.value = parseInt(novo);
+      target.textContent = novo;
+      input.dispatchEvent(new Event("input"));
+    }
+  }
+})();
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', () => {
