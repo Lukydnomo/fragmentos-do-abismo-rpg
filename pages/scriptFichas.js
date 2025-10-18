@@ -3,9 +3,6 @@
 const totalPontos = 15;
 const atributoInputs = document.querySelectorAll('.atributo-input');
 const pontosRestantesEl = document.getElementById('pontos-restantes');
-const hpEl = document.getElementById('hp');
-const sanidadeEl = document.getElementById('sanidade');
-const manaCalcEl = document.getElementById('manaCalc');
 const maxPericiasEl = document.getElementById('max-pericias');
 const periciaCheckboxes = document.querySelectorAll('#pericias input[type="checkbox"]');
 const racaSelect = document.getElementById('raca');
@@ -87,7 +84,6 @@ function atualizarAtributos() {
   else if (resistencia === 8) hpBonus = 24;
   else if (resistencia === 9) hpBonus = 27;
   else if (resistencia >= 10) hpBonus = 30;
-  hpEl.textContent = hpBase + hpBonus;
 
   // Inteligência: Sanidade base 50 + tabela
   const inteligencia = parseInt(document.getElementById('inteligencia').value) || 1;
@@ -102,7 +98,6 @@ function atualizarAtributos() {
   else if (inteligencia === 8) sanBonus = 40;
   else if (inteligencia === 9) sanBonus = 45;
   else if (inteligencia >= 10) sanBonus = 50;
-  sanidadeEl.textContent = 50 + sanBonus;
 
   // Mana: tabela
   const manaAttr = parseInt(document.getElementById('manaAttr').value) || 1;
@@ -118,9 +113,61 @@ function atualizarAtributos() {
   else if (manaAttr === 9) manaTotal = 70;
   else if (manaAttr === 10) manaTotal = 85;
   else if (manaAttr > 10) manaTotal = 100 + (manaAttr - 10) * 20;
-  manaCalcEl.textContent = manaTotal;
 
+  atualizarMedidorPeso();
   atualizarPericias();
+  atualizarStatus(hpBase + hpBonus, 50 + sanBonus, manaTotal);
+}
+
+let statusAtual = {
+  hp: 0,
+  sanidade: 0,
+  mana: 0,
+  max: { hp: 0, sanidade: 0, mana: 0 }
+};
+
+function atualizarStatus(hpMax, sanMax, manaMax) {
+  // Atualiza os máximos
+  statusAtual.max.hp = hpMax;
+  statusAtual.max.sanidade = sanMax;
+  statusAtual.max.mana = manaMax;
+
+  // Inicializa se ainda for 0
+  if (statusAtual.hp === 0 && hpMax > 0) statusAtual.hp = hpMax;
+  if (statusAtual.sanidade === 0 && sanMax > 0) statusAtual.sanidade = sanMax;
+  if (statusAtual.mana === 0 && manaMax > 0) statusAtual.mana = manaMax;
+
+  atualizarBarra("hp");
+  atualizarBarra("sanidade");
+  atualizarBarra("mana");
+}
+
+function atualizarBarra(tipo) {
+  const atual = statusAtual[tipo];
+  const max = statusAtual.max[tipo] || 1;
+  const percent = Math.min((atual / max) * 100, 100);
+
+  const barra = document.getElementById(`${tipo}-bar`);
+  const texto = document.getElementById(`${tipo}-value`);
+  if (!barra || !texto) return;
+
+  barra.style.width = `${percent}%`;
+  texto.innerText = `${atual} / ${max}`;
+}
+
+function alterarStatus(tipo, delta, event) {
+  if (event && event.ctrlKey) {
+    delta *= 5; // se estiver segurando Ctrl, multiplica por 5
+  }
+
+  if (!statusAtual.max[tipo]) return;
+
+  statusAtual[tipo] = Math.min(
+    statusAtual.max[tipo],
+    Math.max(0, statusAtual[tipo] + delta)
+  );
+
+  atualizarBarra(tipo);
 }
 
 // Controle de seleção de perícias
@@ -172,81 +219,107 @@ if (classeSelect) {
   classeSelect.addEventListener('change', atualizarPericias);
 }
 
-// Preview em tempo real
+// ===== Preview atualizado (substituir a função antiga) =====
 function atualizarPreview() {
   const previewEl = document.getElementById('ficha-preview');
-  const nome = document.getElementById('nome')?.value || "";
-  const idade = document.getElementById('idade')?.value || "";
-  const sexo = document.getElementById('sexo')?.value || "";
-  const raca = racaSelect ? racaSelect.value : "";
-  const classe = classeSelect ? classeSelect.value : "";
-  const origem = document.getElementById('origem')?.value || "";
-  let html = `
-    <h3>Preview da Ficha</h3>
-    <div class="preview-content">
-      <p><strong>Nome:</strong> ${nome || '-'}</p>
-      <p><strong>Idade:</strong> ${idade || '-'}</p>
-      <p><strong>Sexo:</strong> ${sexo || '-'}</p>
-      <p><strong>Raça:</strong> ${raca || '-'}</p>
-      <p><strong>Classe:</strong> ${classe || '-'}</p>
-      <p><strong>Origem:</strong> ${origem || '-'}</p>
-      <h4>Atributos</h4>
-      <div class="preview-atributos">
-  `;
+  if (!previewEl) return;
+
+  const nome = document.getElementById('nome')?.value || "-";
+  const idade = document.getElementById('idade')?.value || "-";
+  const sexo = document.getElementById('sexo')?.value || "-";
+  const raca = racaSelect ? racaSelect.value : "-";
+  const classe = classeSelect ? classeSelect.value : "-";
+  const origem = document.getElementById('origem')?.value || "-";
+
+  // Atributos
+  let atributosHtml = '';
   atributoInputs.forEach(input => {
     const label = document.querySelector(`label[for="${input.id}"]`);
-    html += `<p><strong>${label ? label.textContent : input.id}:</strong> ${input.value}</p>`;
+    const nomeLabel = label ? label.textContent.replace(':','') : input.id;
+    atributosHtml += `<p><strong>${nomeLabel}:</strong> ${input.value}</p>`;
   });
-  html += `
+
+  // Status (usando statusAtual)
+  const hpAtual = Number.isFinite(Number(statusAtual.hp)) ? statusAtual.hp : '-';
+  const hpMax = Number.isFinite(Number(statusAtual.max.hp)) ? statusAtual.max.hp : '-';
+  const sanAtual = Number.isFinite(Number(statusAtual.sanidade)) ? statusAtual.sanidade : '-';
+  const sanMax = Number.isFinite(Number(statusAtual.max.sanidade)) ? statusAtual.max.sanidade : '-';
+  const manaAtual = Number.isFinite(Number(statusAtual.mana)) ? statusAtual.mana : '-';
+  const manaMax = Number.isFinite(Number(statusAtual.max.mana)) ? statusAtual.max.mana : '-';
+
+  // Perícias selecionadas
+  const periciasSelecionadas = Array.from(periciaCheckboxes)
+    .filter(cb => cb.checked)
+    .map(cb => {
+      if (cb.value === "Arma") {
+        const armaTipo = cb.parentElement.querySelector('.arma-tipo');
+        return `Arma${armaTipo && armaTipo.value ? " (" + armaTipo.value + ")" : ""}`;
+      }
+      return cb.value;
+    });
+
+  // Magias selecionadas
+  const magiasSelecionadas = Array.from(document.querySelectorAll('.magia-select'))
+    .map(s => s.value)
+    .filter(v => v);
+
+  // Inventário
+  let inventarioHtml = '';
+  if (!inventario || inventario.length === 0) {
+    inventarioHtml = '<li>Nenhum item no inventário.</li>';
+  } else {
+    inventarioHtml = inventario.map(it => {
+      const desc = it.descricao ? ` - ${it.descricao}` : '';
+      return `<li><strong>${it.nome}</strong> x${it.quantidade} (Espaço: ${it.espaco})${desc}</li>`;
+    }).join('');
+  }
+
+  // Monta HTML do preview
+  const html = `
+    <h3>Preview da Ficha</h3>
+    <div class="preview-content">
+      <p><strong>Nome:</strong> ${nome}</p>
+      <p><strong>Idade:</strong> ${idade}</p>
+      <p><strong>Sexo:</strong> ${sexo}</p>
+      <p><strong>Raça:</strong> ${raca}</p>
+      <p><strong>Classe:</strong> ${classe}</p>
+      <p><strong>Origem:</strong> ${origem}</p>
+
+      <h4>Atributos</h4>
+      <div class="preview-atributos">
+        ${atributosHtml}
       </div>
+
       <h4>Status</h4>
       <p><strong>Pontos Restantes:</strong> ${pontosRestantesEl?.textContent || '-'}</p>
-      <p><strong>HP:</strong> ${hpEl?.textContent || '-'}</p>
-      <p><strong>Sanidade:</strong> ${sanidadeEl?.textContent || '-'}</p>
-      <p><strong>Mana:</strong> ${manaCalcEl?.textContent || '-'}</p>
+      <p><strong>HP:</strong> ${hpAtual} / ${hpMax}</p>
+      <p><strong>Sanidade:</strong> ${sanAtual} / ${sanMax}</p>
+      <p><strong>Mana:</strong> ${manaAtual} / ${manaMax}</p>
+
       <h4>Perícias</h4>
       <ul>
-        ${
-          Array.from(periciaCheckboxes)
-            .filter(cb => cb.checked)
-            .map(cb => {
-              if (cb.value === "Arma") {
-                const armaTipo = cb.parentElement.querySelector('.arma-tipo');
-                return `<li>Arma (${armaTipo ? armaTipo.value : ""})</li>`;
-              }
-              return `<li>${cb.value}</li>`;
-            })
-            .join('')
-        }
+        ${periciasSelecionadas.length ? periciasSelecionadas.map(p => `<li>${p}</li>`).join('') : '<li>Nenhuma perícia selecionada.</li>'}
       </ul>
-      <h4>Equipamentos</h4>
-      <p>${document.getElementById("equipamentos")?.value || '-'}</p>
+
       <h4>Magias Selecionadas</h4>
       <ul>
-        ${
-          Array.from(document.querySelectorAll('.magia-select'))
-            .map(sel => sel.value)
-            .filter(v => v)
-            .map(v => `<li>${v}</li>`)
-            .join('')
-        }
+        ${magiasSelecionadas.length ? magiasSelecionadas.map(m => `<li>${m}</li>`).join('') : '<li>Nenhuma magia selecionada.</li>'}
       </ul>
+
       <h4>Magias Extras</h4>
       <p>${document.getElementById("magias")?.value || '-'}</p>
+
       <h4>Bençãos</h4>
       <p>${document.getElementById("bencaos")?.value || '-'}</p>
+
       <h4>Defeitos</h4>
       <p>${document.getElementById("defeitos")?.value || '-'}</p>
+
       <h4>Inventário</h4>
-      <ul>
-        ${
-          inventario.length
-            ? inventario.map(item => `<li>${item.nome} x${item.quantidade}</li>`).join('')
-            : '<li>Nenhum item no inventário.</li>'
-        }
-      </ul>
+      <ul>${inventarioHtml}</ul>
     </div>
   `;
+
   previewEl.innerHTML = html;
 }
 
@@ -304,22 +377,59 @@ function atualizarInventario() {
   lista.innerHTML = "";
   if (inventario.length === 0) {
     lista.innerHTML = "<p>Nenhum item no inventário.</p>";
-    return;
+  } else {
+    inventario.forEach((item, idx) => {
+      lista.innerHTML += `
+        <div class="inventario-item">
+          <div style="display:flex;align-items:center;gap:10px;">
+            ${item.miniatura ? `<img src="${item.miniatura}" alt="Miniatura" style="width:32px;height:32px;border-radius:4px;border:1px solid #bbb;">` : ''}
+            <span><strong>${item.nome}</strong> x${item.quantidade} <small>(Espaço: ${item.espaco})</small></span>
+          </div>
+          <div style="flex:1;">
+            <span style="color:#666;font-size:0.95em;">${item.descricao || ''}</span>
+          </div>
+          <button type="button" onclick="removerItemInventario(${idx})">🗑️</button>
+        </div>
+      `;
+    });
   }
-  inventario.forEach((item, idx) => {
-    lista.innerHTML += `
-      <div class="inventario-item">
-        <div style="display:flex;align-items:center;gap:10px;">
-          ${item.miniatura ? `<img src="${item.miniatura}" alt="Miniatura" style="width:32px;height:32px;border-radius:4px;border:1px solid #bbb;">` : ''}
-          <span><strong>${item.nome}</strong> x${item.quantidade} <small>(Espaço: ${item.espaco})</small></span>
-        </div>
-        <div style="flex:1;">
-          <span style="color:#666;font-size:0.95em;">${item.descricao || ''}</span>
-        </div>
-        <button type="button" onclick="removerItemInventario(${idx})">🗑️</button>
-      </div>
-    `;
-  });
+
+  atualizarMedidorPeso();
+}
+
+function atualizarMedidorPeso() {
+  const container = document.getElementById('inventario-peso');
+  if (!container) return;
+
+  // Calcula peso atual
+  const pesoAtual = inventario.reduce((acc, i) => acc + (i.espaco * i.quantidade), 0);
+
+  // Calcula limite baseado na força
+  const forca = parseInt(document.getElementById('forca')?.value) || 1;
+  let limitePeso = 10;
+  if (forca === 1) limitePeso = 10;
+  else if (forca === 2) limitePeso = 15;
+  else if (forca === 3) limitePeso = 20;
+  else if (forca === 4) limitePeso = 25;
+  else if (forca === 5) limitePeso = 30;
+  else if (forca === 6) limitePeso = 40;
+  else if (forca === 7) limitePeso = 50;
+  else if (forca === 8) limitePeso = 60;
+  else if (forca === 9) limitePeso = 75;
+  else if (forca === 10) limitePeso = 80;
+  else if (forca >= 11 && forca <= 15) limitePeso = 100;
+  else if (forca >= 16 && forca <= 20) limitePeso = 120;
+  else if (forca > 20) limitePeso = 120 + (forca - 20) * 20;
+
+  const porcentagem = Math.min((pesoAtual / limitePeso) * 100, 100);
+  const cor = porcentagem < 70 ? "#4CAF50" : porcentagem < 90 ? "#FF9800" : "#F44336";
+
+  container.innerHTML = `
+    <p><strong>Peso:</strong> ${pesoAtual} / ${limitePeso}</p>
+    <div style="width:100%;background:#ddd;border-radius:6px;height:12px;overflow:hidden;">
+      <div style="width:${porcentagem}%;height:12px;background:${cor};transition:width 0.3s;"></div>
+    </div>
+  `;
 }
 
 function adicionarItemInventario() {
@@ -331,6 +441,30 @@ function adicionarItemInventario() {
   let miniatura = "";
 
   if (!nome) return;
+
+  const pesoAtual = inventario.reduce((acc, i) => acc + (i.espaco * i.quantidade), 0);
+  const forca = parseInt(document.getElementById('forca')?.value) || 1;
+  let limitePeso = 10;
+  if (forca === 1) limitePeso = 10;
+  else if (forca === 2) limitePeso = 15;
+  else if (forca === 3) limitePeso = 20;
+  else if (forca === 4) limitePeso = 25;
+  else if (forca === 5) limitePeso = 30;
+  else if (forca === 6) limitePeso = 40;
+  else if (forca === 7) limitePeso = 50;
+  else if (forca === 8) limitePeso = 60;
+  else if (forca === 9) limitePeso = 75;
+  else if (forca === 10) limitePeso = 80;
+  else if (forca >= 11 && forca <= 15) limitePeso = 100;
+  else if (forca >= 16 && forca <= 20) limitePeso = 120;
+  else if (forca > 20) limitePeso = 120 + (forca - 20) * 20;
+
+  const pesoNovoItem = espaco * quantidade;
+
+  if (pesoAtual + pesoNovoItem > limitePeso) {
+    alert(`⚠️ Você não pode carregar tanto peso!\n\nPeso atual: ${pesoAtual}\nTentaria adicionar: ${pesoNovoItem}\nLimite: ${limitePeso}`);
+    return;
+  }
 
   if (miniaturaInput.files && miniaturaInput.files[0]) {
     const reader = new FileReader();
@@ -361,7 +495,9 @@ function removerItemInventario(idx) {
   atualizarInventario();
 }
 
-// Salvar JSON
+// ---------------------------
+// SALVAR JSON (atualizado)
+// ---------------------------
 function salvarJSON() {
   const ficha = {
     nome: document.getElementById("nome")?.value || "",
@@ -372,9 +508,19 @@ function salvarJSON() {
     sexo: document.getElementById("sexo")?.value || "",
     atributos: {},
     pontosRestantes: pontosRestantesEl?.textContent || "",
-    hp: hpEl?.textContent || "",
-    sanidade: sanidadeEl?.textContent || "",
-    mana: manaCalcEl?.textContent || "",
+    // status: inclui current e max para cada recurso
+    status: {
+      current: {
+        hp: statusAtual.hp,
+        sanidade: statusAtual.sanidade,
+        mana: statusAtual.mana
+      },
+      max: {
+        hp: statusAtual.max.hp,
+        sanidade: statusAtual.max.sanidade,
+        mana: statusAtual.max.mana
+      }
+    },
     pericias: [],
     equipamentos: document.getElementById("equipamentos")?.value || "",
     magiasLivres: document.getElementById("magias")?.value || "",
@@ -384,9 +530,13 @@ function salvarJSON() {
     inventario: inventario.slice(),
     preview: document.getElementById("ficha-preview")?.innerHTML || ""
   };
+
+  // atributos
   atributoInputs.forEach(input => {
     ficha.atributos[input.id] = input.value;
   });
+
+  // pericias (preserva objeto arma se existir)
   periciaCheckboxes.forEach(cb => {
     if (cb.checked) {
       if (cb.value === "Arma") {
@@ -400,154 +550,518 @@ function salvarJSON() {
       }
     }
   });
+
+  // magias selecionadas
   document.querySelectorAll('.magia-select').forEach(select => {
     if (select.value) ficha.magiasSelecionadas.push(select.value);
   });
+
   const blob = new Blob([JSON.stringify(ficha, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `Ficha_${ficha.nome || "personagem"}.json`;
+  a.download = `Ficha_${(ficha.nome || "personagem").replace(/\s+/g, "_")}.json`;
   a.click();
 }
 
-// Carregar JSON
+
+// ---------------------------
+// CARREGAR JSON (atualizado)
+// ---------------------------
 function carregarJSON() {
   const fileInput = document.getElementById("inputJson");
-  const file = fileInput.files[0];
+  const file = fileInput.files && fileInput.files[0];
   if (!file) return;
   const reader = new FileReader();
   reader.onload = function (e) {
-    const dados = JSON.parse(e.target.result);
+    let dados;
+    try {
+      dados = JSON.parse(e.target.result);
+    } catch (err) {
+      alert("Arquivo JSON inválido.");
+      return;
+    }
 
+    // campos básicos
     document.getElementById("nome").value = dados.nome || "";
     document.getElementById("idade").value = dados.idade || "";
     if (racaSelect) racaSelect.value = dados.raca || "";
     if (classeSelect) classeSelect.value = dados.classe || "";
-    document.getElementById("classe").value = dados.classe || "";
     document.getElementById("origem").value = dados.origem || "";
     document.getElementById("sexo").value = dados.sexo || "";
 
-    for (const nome in dados.atributos) {
-      const input = document.getElementById(nome);
-      if (input) input.value = dados.atributos[nome];
+    // atributos (se vierem)
+    if (dados.atributos) {
+      for (const nome in dados.atributos) {
+        const input = document.getElementById(nome);
+        if (input) input.value = dados.atributos[nome];
+      }
     }
 
+    // perícias
     periciaCheckboxes.forEach(cb => {
       cb.checked = false;
       if (cb.value === "Arma") {
-        const armaObj = dados.pericias.find(p => typeof p === "object" && p.nome === "Arma");
+        // procura arma no array (objeto) — compatibilidade com formato salvo
+        const armaObj = Array.isArray(dados.pericias) ? dados.pericias.find(p => typeof p === "object" && p.nome === "Arma") : null;
         cb.checked = !!armaObj;
         const armaTipo = cb.parentElement.querySelector('.arma-tipo');
         if (armaTipo && armaObj) armaTipo.value = armaObj.tipo || "";
       } else {
-        cb.checked = dados.pericias.includes(cb.value);
+        // se pericias veio como array de strings
+        cb.checked = Array.isArray(dados.pericias) ? dados.pericias.includes(cb.value) : false;
       }
     });
 
+    // textos livres
     document.getElementById("equipamentos").value = dados.equipamentos || "";
     document.getElementById("magias").value = dados.magiasLivres || "";
     document.getElementById("bencaos").value = dados.bencaos || "";
     document.getElementById("defeitos").value = dados.defeitos || "";
 
+    // magias dinâmicas
     document.getElementById("magia-container").innerHTML = "";
     (dados.magiasSelecionadas || []).forEach(magia => adicionarCampoMagia(magia));
 
+    // inventário
     inventario = Array.isArray(dados.inventario) ? dados.inventario : [];
     atualizarInventario();
 
-    if (pontosRestantesEl) pontosRestantesEl.textContent = dados.pontosRestantes || "";
-    if (hpEl) hpEl.textContent = dados.hp || "";
-    if (sanidadeEl) sanidadeEl.textContent = dados.sanidade || "";
-    if (manaCalcEl) manaCalcEl.textContent = dados.mana || "";
+    // pontos restantes (compat)
+    if (pontosRestantesEl) pontosRestantesEl.textContent = dados.pontosRestantes || pontosRestantesEl.textContent || "";
 
-    atualizarAtributos();
+    // --- Status: compatibilidade com formatos antigos e novo ---
+    if (dados.status && typeof dados.status === "object") {
+      // novo formato salvo pela função acima
+      const cur = dados.status.current || {};
+      const mx = dados.status.max || {};
+      // atualiza máximos e atuais com segurança
+      const hpMax = Number(mx.hp) || statusAtual.max.hp || 0;
+      const sanMax = Number(mx.sanidade) || statusAtual.max.sanidade || 0;
+      const manaMax = Number(mx.mana) || statusAtual.max.mana || 0;
+      atualizarStatus(hpMax, sanMax, manaMax);
+
+      // sobrescreve valores atuais somente se vierem valores numéricos
+      if (Number.isFinite(Number(cur.hp))) statusAtual.hp = Number(cur.hp);
+      if (Number.isFinite(Number(cur.sanidade))) statusAtual.sanidade = Number(cur.sanidade);
+      if (Number.isFinite(Number(cur.mana))) statusAtual.mana = Number(cur.mana);
+      atualizarBarra("hp");
+      atualizarBarra("sanidade");
+      atualizarBarra("mana");
+    } else {
+      // compatibilidade com formato antigo (hp / sanidade / mana como strings)
+      // tenta extrair números caso venham no formato "X / Y" ou só "X"
+      function extrairNum(str) {
+        if (!str && str !== 0) return null;
+        const s = String(str);
+        const m = s.match(/(\d+)/);
+        return m ? Number(m[1]) : null;
+      }
+      const hpOld = extrairNum(dados.hp);
+      const sanOld = extrairNum(dados.sanidade);
+      const manaOld = extrairNum(dados.mana);
+      // se houver valores, atualiza máximos e atuais
+      if (hpOld !== null || sanOld !== null || manaOld !== null) {
+        // chamamos atualizarAtributos() primeiro para recomputar máximos
+        atualizarAtributos();
+        // se vier apenas um número, vamos assumir que é o máximo (compatibilidade)
+        if (hpOld !== null) {
+          statusAtual.max.hp = hpOld;
+          statusAtual.hp = hpOld;
+        }
+        if (sanOld !== null) {
+          statusAtual.max.sanidade = sanOld;
+          statusAtual.sanidade = sanOld;
+        }
+        if (manaOld !== null) {
+          statusAtual.max.mana = manaOld;
+          statusAtual.mana = manaOld;
+        }
+        atualizarBarra("hp"); atualizarBarra("sanidade"); atualizarBarra("mana");
+      } else {
+        // Se não vier nada, apenas recalcula com base nos atributos
+        atualizarAtributos();
+      }
+    }
+
+    // atualiza componentes dependentes
+    atualizarPericias();
     atualizarPreview();
   };
   reader.readAsText(file);
 }
 
-// PDF
+// ---------------------------
+// GERAR PDF (atualizado)
+// ---------------------------
 function gerarPDF() {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-  const nome = document.getElementById("nome")?.value || "";
-  const raca = racaSelect?.value || "";
-  const classe = classeSelect?.value || "";
+  const { jsPDF } = window.jspdf || {};
+  if (!jsPDF) {
+    alert("Biblioteca jsPDF não encontrada. Verifique o <script> do jsPDF no HTML.");
+    return;
+  }
+
+  const doc = new jsPDF({ unit: "mm", format: "a4" });
+
+  const nome = document.getElementById("nome")?.value || "Personagem";
+  const raca = document.getElementById("raca")?.value || "";
+  const classe = document.getElementById("classe")?.value || "";
   const origem = document.getElementById("origem")?.value || "";
   const idade = document.getElementById("idade")?.value || "";
   const sexo = document.getElementById("sexo")?.value || "";
+
   let y = 15;
+  const lineHeight = 7;
+  const pageHeight = 290;
+  const margin = 10;
+
+  const addText = (text, x, yPos) => {
+    const lines = doc.splitTextToSize(text, 180);
+    doc.text(lines, x, yPos);
+    return yPos + lines.length * 6;
+  };
+
+  // Cabeçalho
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(16);
+  doc.setFontSize(18);
   doc.text("Ficha RE:Zero RPG", 70, y);
   y += 10;
+
   doc.setFontSize(12);
   doc.setFont("helvetica", "normal");
-  doc.text(`Nome: ${nome}`, 10, y); y += 7;
-  doc.text(`Idade: ${idade}    Sexo: ${sexo}`, 10, y); y += 7;
-  doc.text(`Raça: ${raca}    Classe: ${classe}    Origem: ${origem}`, 10, y); y += 7;
-  doc.text("Atributos", 10, y); y += 7;
+  y = addText(`Nome: ${nome}`, margin, y);
+  y = addText(`Idade: ${idade}    Sexo: ${sexo}`, margin, y);
+  y = addText(`Raça: ${raca}    Classe: ${classe}    Origem: ${origem}`, margin, y);
+
+  const addSectionTitle = (title) => {
+    y += 6;
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(14);
+    doc.text(title, margin, y);
+    y += 4;
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(12);
+  };
+
+  // Atributos
+  addSectionTitle("Atributos");
   atributoInputs.forEach(input => {
     const label = document.querySelector(`label[for="${input.id}"]`);
-    doc.text(`${label ? label.textContent : input.id}: ${input.value}`, 10, y); y += 7;
+    y = addText(`${label ? label.textContent : input.id}: ${input.value}`, margin, y);
+    if (y > pageHeight) { doc.addPage(); y = 20; }
   });
-  doc.text("Status", 10, y); y += 7;
-  doc.text(`HP: ${hpEl.textContent}`, 10, y); y += 7;
-  doc.text(`Sanidade: ${sanidadeEl.textContent}`, 10, y); y += 7;
-  doc.text(`Mana: ${manaCalcEl.textContent}`, 10, y); y += 7;
+
+  // Status (usando statusAtual)
+  addSectionTitle("Status");
+  const hpText = `${statusAtual.hp} / ${statusAtual.max.hp}`;
+  const sanText = `${statusAtual.sanidade} / ${statusAtual.max.sanidade}`;
+  const manaText = `${statusAtual.mana} / ${statusAtual.max.mana}`;
+  y = addText(`HP: ${hpText}`, margin, y);
+  y = addText(`Sanidade: ${sanText}`, margin, y);
+  y = addText(`Mana: ${manaText}`, margin, y);
+
+  // Perícias
   const periciasSelecionadas = [];
   periciaCheckboxes.forEach(cb => {
     if (cb.checked) {
       if (cb.value === "Arma") {
-        const armaTipo = cb.parentElement.querySelector('.arma-tipo');
+        const armaTipo = cb.parentElement.querySelector(".arma-tipo");
         periciasSelecionadas.push(`Arma (${armaTipo ? armaTipo.value : ""})`);
-      } else {
-        periciasSelecionadas.push(cb.value);
-      }
+      } else periciasSelecionadas.push(cb.value);
     }
   });
   if (periciasSelecionadas.length) {
-    doc.text("Perícias", 10, y); y += 7;
-    doc.text(periciasSelecionadas.join(", "), 10, y); y += 7;
+    addSectionTitle("Perícias");
+    y = addText(periciasSelecionadas.join(", "), margin, y);
   }
-  const magiasSelecionadas = Array.from(document.querySelectorAll('.magia-select')).map(sel => sel.value).filter(v => v !== '');
+
+  // Magias
+  const magiasSelecionadas = Array.from(document.querySelectorAll(".magia-select"))
+    .map(sel => sel.value)
+    .filter(v => v !== "");
   if (magiasSelecionadas.length) {
-    doc.text("Magias Selecionadas", 10, y); y += 7;
-    magiasSelecionadas.forEach(m => { doc.text(`- ${m}`, 10, y); y += 7; });
+    addSectionTitle("Magias Selecionadas");
+    magiasSelecionadas.forEach(m => y = addText(`- ${m}`, margin, y));
   }
-  const equipamentos = document.getElementById("equipamentos")?.value || "";
-  if (equipamentos.trim()) {
-    doc.text("Equipamentos", 10, y); y += 7;
-    doc.text(equipamentos, 10, y); y += 7;
-  }
-  const magiasLivres = document.getElementById("magias")?.value || "";
-  if (magiasLivres.trim()) {
-    doc.text("Magias Extras", 10, y); y += 7;
-    doc.text(magiasLivres, 10, y); y += 7;
-  }
-  const bencaos = document.getElementById("bencaos")?.value || "";
-  if (bencaos.trim()) {
-    doc.text("Bençãos", 10, y); y += 7;
-    doc.text(bencaos, 10, y); y += 7;
-  }
-  const defeitos = document.getElementById("defeitos")?.value || "";
-  if (defeitos.trim()) {
-    doc.text("Defeitos", 10, y); y += 7;
-    doc.text(defeitos, 10, y); y += 7;
-  }
+
+  // Campos de texto
+  const adicionarCampo = (titulo, id) => {
+    const valor = document.getElementById(id)?.value.trim();
+    if (valor) {
+      addSectionTitle(titulo);
+      y = addText(valor, margin, y);
+    }
+  };
+
+  adicionarCampo("Equipamentos", "equipamentos");
+  adicionarCampo("Magias Extras", "magias");
+  adicionarCampo("Bençãos", "bencaos");
+  adicionarCampo("Defeitos", "defeitos");
+
+  // Inventário
   if (inventario.length) {
-    doc.text("Inventário", 10, y); y += 7;
+    addSectionTitle("Inventário");
     inventario.forEach(item => {
-      doc.text(`- ${item.nome} x${item.quantidade}`, 10, y); y += 7;
+      const itemTexto = `- ${item.nome} x${item.quantidade} (${item.espaco} espaço${item.espaco > 1 ? "s" : ""})`;
+      y = addText(itemTexto, margin, y);
+      if (item.descricao) y = addText(`   ${item.descricao}`, margin + 5, y);
+      if (y > pageHeight) { doc.addPage(); y = 20; }
     });
   }
-  doc.save(`Ficha_${nome || "personagem"}.pdf`);
+
+  // Rodapé
+  doc.setFontSize(10);
+  doc.text(`Ficha gerada automaticamente em ${new Date().toLocaleDateString()}`, margin, 285);
+
+  doc.save(`Ficha_${nome.replace(/\s+/g, "_")}.pdf`);
 }
+
+
+// ===== ⚙️ CONFIGURAÇÕES =====
+const MAX_DICE_GROUP = 100;
+const MAX_FACES = 1000;
+const TEMPO_NOTIFICACAO = 8000; // ms
+
+// ===== 🎲 FUNÇÃO PRINCIPAL DE ROLAGEM =====
+function rolarDadoExpr(expressao, detalhado = true) {
+  const regex = /(\d*)d(\d+)/gi;
+  const detalhes = [];
+  let exprMod = expressao;
+
+  function substituir(match, qtdStr, facesStr) {
+    const qtd = parseInt(qtdStr) || 1;
+    const faces = parseInt(facesStr);
+
+    // Limites de segurança
+    if (qtd > MAX_DICE_GROUP || faces > MAX_FACES)
+      throw new Error(`Limite: até ${MAX_DICE_GROUP} dados de d${MAX_FACES}`);
+
+    const rolagens = Array.from({ length: qtd }, () => Math.floor(Math.random() * faces) + 1);
+    detalhes.push([...rolagens].sort((a, b) => b - a));
+
+    return String(rolagens.reduce((a, b) => a + b, 0));
+  }
+
+  exprMod = exprMod.replace(regex, substituir);
+
+  let resultado;
+  try {
+    resultado = Function(`"use strict";return (${exprMod})`)();
+  } catch {
+    return null;
+  }
+
+  // Retorno simples
+  if (!detalhado) {
+    return { resultado, resultadoWOutEval: exprMod };
+  }
+
+  // Retorno detalhado
+  const breakdown = detalhes.map(lst => `[${lst.join(", ")}]`).join(" + ");
+  const diceGroup = expressao;
+  return { resultado, resultadoWOutEval: breakdown || exprMod, dice_group: diceGroup };
+}
+
+// ===== 🔔 SISTEMA DE NOTIFICAÇÕES =====
+function criarNotificacao(titulo, detalhe, total) {
+  const container = document.getElementById("notificacoes");
+  if (!container) return;
+
+  const notif = document.createElement("div");
+  notif.classList.add("notificacao");
+
+  notif.innerHTML = `
+    <div class="icone-dado"></div>
+    <div class="conteudo">
+      <h4>${titulo}</h4>
+      <div class="detalhes">${detalhe}</div>
+    </div>
+    <div class="resultado">${total}</div>
+    <span class="fechar">&times;</span>
+  `;
+
+  container.appendChild(notif);
+  setTimeout(() => notif.classList.add("show"), 50);
+
+  // botão fechar
+  notif.querySelector(".fechar").addEventListener("click", () => fecharNotificacao(notif));
+
+  // auto fechar
+  setTimeout(() => fecharNotificacao(notif), TEMPO_NOTIFICACAO);
+}
+
+function fecharNotificacao(notif) {
+  notif.classList.remove("show");
+  setTimeout(() => notif.remove(), 300);
+}
+
+// ===== 🧮 CONTROLADOR DE ROLAGEM =====
+function rolarDado() {
+  const entrada = document.getElementById("expressaoDado").value.trim();
+  const usuario = document.getElementById("nome")?.value || "Jogador";
+
+  if (!entrada) {
+    alert("Digite uma expressão de dado, ex: 2d6+3 ou 5#d10+2");
+    return;
+  }
+
+  try {
+    if (entrada.includes("#")) {
+      const [qtdStr, dadoExpr] = entrada.split("#", 2);
+      const qtd = parseInt(qtdStr) || 1;
+
+      for (let i = 0; i < qtd; i++) {
+        const r = rolarDadoExpr(dadoExpr, false);
+        criarNotificacao(`${usuario} (${entrada})`, `[${r.resultadoWOutEval}]`, r.resultado);
+      }
+    } else {
+      const r = rolarDadoExpr(entrada, true);
+      if (!r) throw new Error("Expressão inválida!");
+      criarNotificacao(`${usuario} (${entrada})`, r.resultadoWOutEval, r.resultado);
+    }
+  } catch (err) {
+    criarNotificacao("❌ Erro na Rolagem", err.message, "—");
+  }
+}
+
+// ===== 🚀 INICIALIZAÇÃO =====
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("rolarDado");
+  if (btn) btn.addEventListener("click", rolarDado);
+});
+
+// ===== 🧠 Mapeamento de perícias e atributos =====
+const periciaAtributos = {
+  "Acrobacia": ["agilidade"],
+  "Adestramento": ["carisma", "mana"],
+  "Atletismo": ["agilidade", "forca"],
+  "Atuação": ["carisma"],
+  "Conhecimento": ["inteligencia"],
+  "Crime": ["inteligencia"],
+  "Diplomacia": ["inteligencia", "carisma"],
+  "Enganação": ["carisma"],
+  "Fortitude": ["resistencia"],
+  "Furtividade": ["agilidade"],
+  "Iniciativa": ["agilidade"],
+  "Intimidação": ["carisma"],
+  "Intuição": ["deteccao"],
+  "Investigação": ["deteccao"],
+  "Luta": ["forca"],
+  "Magia de Água": ["mana"],
+  "Magia de Fogo/Gelo": ["mana"],
+  "Magia de Terra": ["mana"],
+  "Magia de Vento": ["mana"],
+  "Magia de Luz": ["mana"],
+  "Magia de Trevas": ["mana"],
+  "Arma": ["forca"], // depende, mas default
+  "Medicina": ["inteligencia"],
+  "Atualidades": ["inteligencia"],
+  "Pontaria": ["agilidade"],
+  "Criação": ["inteligencia"],
+  "Nobreza": ["carisma"],
+  "Reflexos": ["agilidade"],
+  "Percepção": ["deteccao"],
+  "Tática": ["inteligencia"],
+  "Sobrevivência": ["inteligencia", "resistencia"],
+  "Vontade": ["inteligencia", "resistencia"],
+  "Negociação": ["inteligencia", "carisma"],
+  "Explosivos": ["agilidade"],
+  "Linguagem": ["inteligencia"],
+  "Contratante": ["mana"],
+  "Runas": ["mana"],
+  "Maldições": ["mana"],
+  "Psychokinesis": ["inteligencia"],
+  "Pilotagem": ["agilidade"]
+};
+
+function rolarPericia(nomePericia) {
+  const atributos = periciaAtributos[nomePericia] || [];
+  if (atributos.length === 0) {
+    criarNotificacao("❌ Erro", `Perícia '${nomePericia}' sem atributo definido`, "—");
+    return;
+  }
+
+  // Calcula a média dos atributos associados
+  let soma = 0;
+  atributos.forEach(attr => {
+    const el = document.getElementById(attr.toLowerCase());
+    soma += el ? parseInt(el.value) || 0 : 0;
+  });
+  const atributoMedio = soma / atributos.length;
+
+  // Verifica se é treinada
+  const periciaTreinada = Array.from(periciaCheckboxes).some(cb => cb.checked && cb.value === nomePericia);
+  const bonus = periciaTreinada ? 5 : 0;
+
+  // ===== 🎲 Cálculo de quantidade de dados =====
+  // Treinadas começam com 1 dado base, não treinadas com 0
+  let dadosRolados = (periciaTreinada ? 1 : 0) + Math.floor(atributoMedio / 5);
+  let modo = "melhor";
+
+  // Se tiver 0 ou menos dados → rola com desvantagem
+  if (dadosRolados <= 0) {
+    modo = "pior";
+    dadosRolados = Math.abs(dadosRolados) + 2; // ex: 0→2, -1→3, -2→4...
+  }
+
+  // ===== 🎯 Rola os dados =====
+  const resultados = Array.from({ length: dadosRolados }, () => Math.floor(Math.random() * 20) + 1);
+
+  let resultadoBase;
+  if (modo === "melhor") {
+    resultadoBase = Math.max(...resultados);
+  } else {
+    resultadoBase = Math.min(...resultados);
+  }
+
+  const resultadoFinal = resultadoBase + bonus;
+
+  // ===== 🧾 Exibe notificação =====
+  criarNotificacao(
+    `${nomePericia} (${periciaTreinada ? "Treinada" : "Não Treinada"})`,
+    `[${resultados.join(", ")}] ${modo === "melhor" ? "→ melhor dado" : "→ pior dado"} +${bonus}`,
+    resultadoFinal
+  );
+}
+
+
+// ===== 🧷 Adiciona os botões de rolar =====
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("#pericias label").forEach(label => {
+    const input = label.querySelector("input[type='checkbox']");
+    if (!input) return;
+
+    const pericia = input.value;
+    if (!label.querySelector(".botao-rolar")) {
+      const img = document.createElement("img");
+      img.src = "../images/dice-icon.png";
+      img.classList.add("botao-rolar");
+      img.alt = "Rolar";
+      img.width = 16;
+      img.height = 16;
+      img.style.cursor = "pointer";
+      img.style.marginLeft = "6px";
+
+      // Impede o clique de afetar o checkbox
+      img.addEventListener("click", (ev) => {
+        ev.stopPropagation();  // ← evita alternar o checkbox
+        ev.preventDefault();
+        rolarPericia(pericia);
+      });
+
+      label.appendChild(img);
+    }
+  });
+});
+
+document.querySelectorAll('.bar-btn').forEach(btn => {
+  btn.addEventListener('click', ev => ev.preventDefault());
+});
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', () => {
   atualizarAtributos();
   atualizarPreview();
   atualizarInventario();
+  atualizarMedidorPeso();
 });

@@ -35,6 +35,18 @@
                 hidden
               />
             </label>
+
+            <!-- Caixa de rolagem com input -->
+            <div class="rolagem-container">
+              <input
+                type="text"
+                id="expressaoDado"
+                placeholder="Digite uma rolagem (ex: 1d20+3)"
+              />
+              <button type="button" id="rolarDado">🎲 Rolar</button>
+            </div>
+
+            <div id="resultadoRolagem"></div>
           </section>
 
           <section id="basico" class="card">
@@ -47,7 +59,6 @@
                   id="nome"
                   name="nome"
                   placeholder="Seu nome"
-                  required
                 />
               </div>
               <div>
@@ -145,8 +156,6 @@
                   type="number"
                   id="forca"
                   class="atributo-input"
-                  min="1"
-                  max="5"
                   value="1"
                 />
               </div>
@@ -156,8 +165,6 @@
                   type="number"
                   id="agilidade"
                   class="atributo-input"
-                  min="1"
-                  max="5"
                   value="1"
                 />
               </div>
@@ -167,8 +174,6 @@
                   type="number"
                   id="carisma"
                   class="atributo-input"
-                  min="1"
-                  max="5"
                   value="1"
                 />
               </div>
@@ -178,8 +183,6 @@
                   type="number"
                   id="inteligencia"
                   class="atributo-input"
-                  min="1"
-                  max="5"
                   value="1"
                 />
               </div>
@@ -189,8 +192,6 @@
                   type="number"
                   id="manaAttr"
                   class="atributo-input"
-                  min="1"
-                  max="5"
                   value="1"
                 />
               </div>
@@ -200,8 +201,6 @@
                   type="number"
                   id="resistencia"
                   class="atributo-input"
-                  min="1"
-                  max="5"
                   value="1"
                 />
               </div>
@@ -211,8 +210,6 @@
                   type="number"
                   id="sorte"
                   class="atributo-input"
-                  min="1"
-                  max="5"
                   value="1"
                 />
               </div>
@@ -222,8 +219,6 @@
                   type="number"
                   id="deteccao"
                   class="atributo-input"
-                  min="1"
-                  max="5"
                   value="1"
                 />
               </div>
@@ -247,6 +242,15 @@
                 Adestramento</label
               >
               <label
+                ><input type="checkbox" name="pericia" value="Arma" /> Arma
+                (<input
+                  type="text"
+                  class="arma-tipo"
+                  placeholder="Tipo"
+                  style="width: 80px"
+                />)</label
+              >
+              <label
                 ><input type="checkbox" name="pericia" value="Atletismo" />
                 Atletismo</label
               >
@@ -255,8 +259,20 @@
                 Atuação</label
               >
               <label
+                ><input type="checkbox" name="pericia" value="Atualidades" />
+                Atualidades</label
+              >
+              <label
                 ><input type="checkbox" name="pericia" value="Conhecimento" />
                 Conhecimento</label
+              >
+              <label
+                ><input type="checkbox" name="pericia" value="Contratante" />
+                Contratante</label
+              >
+              <label
+                ><input type="checkbox" name="pericia" value="Criação" />
+                Criação</label
               >
               <label
                 ><input type="checkbox" name="pericia" value="Crime" />
@@ -269,6 +285,10 @@
               <label
                 ><input type="checkbox" name="pericia" value="Enganação" />
                 Enganação</label
+              >
+              <label
+                ><input type="checkbox" name="pericia" value="Explosivos" />
+                Explosivos</label
               >
               <label
                 ><input type="checkbox" name="pericia" value="Fortitude" />
@@ -295,6 +315,10 @@
                 Investigação</label
               >
               <label
+                ><input type="checkbox" name="pericia" value="Linguagem" />
+                Linguagem</label
+              >
+              <label
                 ><input type="checkbox" name="pericia" value="Luta" />
                 Luta</label
               >
@@ -311,16 +335,12 @@
                 Magia de Fogo/Gelo</label
               >
               <label
-                ><input type="checkbox" name="pericia" value="Magia de Terra" />
-                Magia de Terra</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Magia de Vento" />
-                Magia de Vento</label
-              >
-              <label
                 ><input type="checkbox" name="pericia" value="Magia de Luz" />
                 Magia de Luz</label
+              >
+              <label
+                ><input type="checkbox" name="pericia" value="Magia de Terra" />
+                Magia de Terra</label
               >
               <label
                 ><input
@@ -331,95 +351,138 @@
                 Magia de Trevas</label
               >
               <label
-                ><input type="checkbox" name="pericia" value="Arma" /> Arma
-                (<input
-                  type="text"
-                  class="arma-tipo"
-                  placeholder="Tipo"
-                  style="width: 80px"
-                />)</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Medicina" />
-                Medicina</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Atualidades" />
-                Atualidades</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Pontaria" />
-                Pontaria</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Criação" />
-                Criação</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Nobreza" />
-                Nobreza</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Reflexos" />
-                Reflexos</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Percepção" />
-                Percepção</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Tática" />
-                Tática</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Sobrevivência" />
-                Sobrevivência</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Vontade" />
-                Vontade</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Negociação" />
-                Negociação</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Explosivos" />
-                Explosivos</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Linguagem" />
-                Linguagem</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Contratante" />
-                Contratante</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Runas" />
-                Runas</label
+                ><input type="checkbox" name="pericia" value="Magia de Vento" />
+                Magia de Vento</label
               >
               <label
                 ><input type="checkbox" name="pericia" value="Maldições" />
                 Maldições</label
               >
               <label
-                ><input type="checkbox" name="pericia" value="Psychokinesis" />
-                Psychokinesis</label
+                ><input type="checkbox" name="pericia" value="Medicina" />
+                Medicina</label
+              >
+              <label
+                ><input type="checkbox" name="pericia" value="Negociação" />
+                Negociação</label
+              >
+              <label
+                ><input type="checkbox" name="pericia" value="Nobreza" />
+                Nobreza</label
+              >
+              <label
+                ><input type="checkbox" name="pericia" value="Percepção" />
+                Percepção</label
               >
               <label
                 ><input type="checkbox" name="pericia" value="Pilotagem" />
                 Pilotagem</label
               >
+              <label
+                ><input type="checkbox" name="pericia" value="Pontaria" />
+                Pontaria</label
+              >
+              <label
+                ><input type="checkbox" name="pericia" value="Psychokinesis" />
+                Psychokinesis</label
+              >
+              <label
+                ><input type="checkbox" name="pericia" value="Reflexos" />
+                Reflexos</label
+              >
+              <label
+                ><input type="checkbox" name="pericia" value="Runas" />
+                Runas</label
+              >
+              <label
+                ><input type="checkbox" name="pericia" value="Sobrevivência" />
+                Sobrevivência</label
+              >
+              <label
+                ><input type="checkbox" name="pericia" value="Tática" />
+                Tática</label
+              >
+              <label
+                ><input type="checkbox" name="pericia" value="Vontade" />
+                Vontade</label
+              >
             </div>
           </section>
 
           <section id="stats-section" class="card">
-            <h2>Status Calculados</h2>
-            <div class="status-grid">
-              <div><label>HP:</label> <span id="hp">0</span></div>
-              <div><label>Sanidade:</label> <span id="sanidade">0</span></div>
-              <div><label>Mana:</label> <span id="manaCalc">0</span></div>
+            <h2>Status</h2>
+            <div class="status-bars">
+              <div class="status-item">
+                <label>❤️ HP</label>
+                <div class="status-bar">
+                  <div id="hp-bar" class="bar-fill"></div>
+                  <span id="hp-value" class="bar-text">0 / 0</span>
+                </div>
+                <div class="bar-controls">
+                  <button
+                    type="button"
+                    class="bar-btn"
+                    onclick="alterarStatus('hp', -1, event)"
+                  >
+                    –
+                  </button>
+                  <button
+                    type="button"
+                    class="bar-btn"
+                    onclick="alterarStatus('hp', 1, event)"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              <div class="status-item">
+                <label>🧠 Sanidade</label>
+                <div class="status-bar">
+                  <div id="sanidade-bar" class="bar-fill"></div>
+                  <span id="sanidade-value" class="bar-text">0 / 0</span>
+                </div>
+                <div class="bar-controls">
+                  <button
+                    type="button"
+                    class="bar-btn"
+                    onclick="alterarStatus('sanidade', -1, event)"
+                  >
+                    –
+                  </button>
+                  <button
+                    type="button"
+                    class="bar-btn"
+                    onclick="alterarStatus('sanidade', 1, event)"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              <div class="status-item">
+                <label>🔮 Mana</label>
+                <div class="status-bar">
+                  <div id="mana-bar" class="bar-fill"></div>
+                  <span id="mana-value" class="bar-text">0 / 0</span>
+                </div>
+                <div class="bar-controls">
+                  <button
+                    type="button"
+                    class="bar-btn"
+                    onclick="alterarStatus('mana', -1, event)"
+                  >
+                    –
+                  </button>
+                  <button
+                    type="button"
+                    class="bar-btn"
+                    onclick="alterarStatus('mana', 1, event)"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
             </div>
           </section>
 
@@ -479,6 +542,10 @@
 
           <section id="inventario-section" class="card">
             <h2>Inventário</h2>
+            <div
+              id="inventario-peso"
+              style="margin-top: 10px; margin-bottom: 10px"
+            ></div>
             <div id="inventario-list"></div>
             <div class="inventario-form">
               <input type="text" id="item-nome" placeholder="Nome do item" />
@@ -521,6 +588,8 @@
       <aside class="preview-section" id="ficha-preview">
         <!-- Preview será preenchido via JavaScript -->
       </aside>
+      <!-- Container onde as notificações aparecerão -->
+      <div id="notificacoes"></div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="scriptFichas.js"></script>
