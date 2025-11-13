@@ -11,817 +11,410 @@
     />
   </head>
   <body>
-    <div class="container">
-      <header>
-        <h1>Ficha RE:Zero RPG</h1>
-        <p class="subtitle">
-          Crie e salve sua ficha de personagem no universo RE:Zero!
-        </p>
-      </header>
-      <main>
-        <form id="fichaForm" autocomplete="off">
-          <section class="acoes">
-            <button type="button" onclick="gerarPDF()">📄 Gerar PDF</button>
-            <button type="button" onclick="salvarJSON()">
-              💾 Salvar Ficha (JSON)
-            </button>
-            <label class="file-upload">
-              📂 Carregar Ficha
-              <input
-                type="file"
-                id="inputJson"
-                accept=".json"
-                onchange="carregarJSON()"
-                hidden
-              />
-            </label>
-
-            <!-- Caixa de rolagem com input -->
-            <div class="rolagem-container">
-              <input
-                type="text"
-                id="expressaoDado"
-                placeholder="Digite uma rolagem (ex: 1d20+3)"
-              />
-              <button type="button" id="rolarDado">
-                <img src="../images/dice-icon.png" alt="" style="width: 16px" />
-              </button>
-            </div>
-
-            <div id="resultadoRolagem"></div>
-          </section>
-
-          <section id="basico" class="card">
-            <h2>Dados Básicos</h2>
-            <div class="grid-2">
-              <div>
-                <label for="nome">Nome do Personagem:</label>
-                <input
-                  type="text"
-                  id="nome"
-                  name="nome"
-                  placeholder="Seu nome"
-                />
+    <div>
+      <div class="header">
+        <div class="header-content">
+          <div class="logo">
+            <img
+              class="arca-text"
+              src="../images/arca-icon.png"
+              alt="arca icon"
+            />
+        </div>
+      </div>
+      <div class="main-content">
+        <div class="sheet-wrapper">
+          <div class="autography-container"></div>
+          <div class="sheet-header">
+            <div class="sheet-header-container">
+              <div class="profile-picture-container">
+                <div style="display: block;
+                unicode-bidi: isolate;">
+                  <button class="button-naked" onclick="document.getElementById('profilePicInput').click()">
+                    <img class="profile-picture" id="profilePic" src="../images/blank-profile-picture.png" alt="Profile picture">
+                  </button>
+                  <input type="file" id="profilePicInput" accept="image/*" style="display: none" onchange="updateProfilePic(this)">
+                  <script>
+                    function updateProfilePic(input) {
+                    if (input.files && input.files[0]) {
+                      const reader = new FileReader();
+                      reader.onload = function(e) {
+                      document.getElementById('profilePic').src = e.target.result;
+                      };
+                      reader.readAsDataURL(input.files[0]);
+                    }
+                    }
+                  </script>
+                </div>
               </div>
-              <div>
-                <label for="idade">Idade:</label>
-                <input
-                  type="number"
-                  id="idade"
-                  name="idade"
-                  min="1"
-                  max="999"
-                  placeholder="Idade"
-                />
-              </div>
-              <div>
-                <label for="raca">Raça:</label>
-                <select id="raca" name="raca" required>
-                  <option value="">Selecione...</option>
-                  <option>Humano</option>
-                  <option>Demi-Humano</option>
-                  <option>Semi-Humano</option>
-                  <option>Lobisomem</option>
-                  <option>Demônio/Oni</option>
-                  <option>Elfo</option>
-                  <option>Triclope</option>
-                  <option>Ciclope</option>
-                  <option>Semi-Dragão</option>
-                  <option>Mult-membros</option>
-                  <option>Semi-Gigante</option>
-                  <option>Espírito</option>
-                </select>
-              </div>
-              <div>
-                <label for="classe">Classe:</label>
-                <select id="classe" name="classe" required>
-                  <option value="">Selecione...</option>
-                  <option>Mago</option>
-                  <option>Feiticeiro</option>
-                  <option>Bruxo</option>
-                  <option>Necromante</option>
-                  <option>Bárbaro</option>
-                  <option>Bardo</option>
-                  <option>Clérigo</option>
-                  <option>Druida</option>
-                  <option>Atirador</option>
-                  <option>Cavaleiro</option>
-                  <option>Paladino</option>
-                  <option>Monge</option>
-                  <option>Tank</option>
-                  <option>Ladino</option>
-                  <option>Guerreiro</option>
-                  <option>Pugilista</option>
-                  <option>Assassino</option>
-                </select>
-              </div>
-              <div>
-                <label for="origem">Origem:</label>
-                <select id="origem" name="origem" required>
-                  <option value="">Selecione...</option>
-                  <option>Artista</option>
-                  <option>Médico Arcaico</option>
-                  <option>Shinobi</option>
-                  <option>Nobre / Ex-nobre</option>
-                  <option>Comerciante</option>
-                  <option>Cavaleiro</option>
-                  <option>Mercenário</option>
-                  <option>General / Comandante</option>
-                  <option>Escravo / Ex-escravo</option>
-                  <option>Criador de Metias</option>
-                  <option>Criador de Armas</option>
-                  <option>Bombardeiro</option>
-                  <option>Investigador</option>
-                  <option>Assassino</option>
-                </select>
-              </div>
-              <div>
-                <label for="sexo">Sexo:</label>
-                <select id="sexo" name="sexo">
-                  <option value="">Selecione...</option>
-                  <option>Masculino</option>
-                  <option>Feminino</option>
-                  <option>Outro</option>
-                </select>
+              <div class="header-info-container">
+                <div class="header-info-row">
+                  <div class="info-line">
+                    <h3>PERSONAGEM</h3>
+                    <input type="text" class="sheet-input" autocomplete="nope" id="nome">
+                  </div>
+                  <div class="info-line">
+                    <h3>JOGADOR</h3>
+                    <input type="text" class="sheet-input" autocomplete="nope">
+                  </div>
+                  <div class="info-line">
+                    <h3>IDADE</h3>
+                    <input type="text" class="sheet-input" autocomplete="nope" id="idade" min="1" max="999">
+                  </div>
+                </div>
+                <div class="header-info-container">
+                <div class="header-info-row">
+                  <div class="info-line">
+                    <h3>ORIGEM</h3>
+                    <select class="sheet-input">
+                      <option value="">Selecione...</option>
+                      <option>Artista</option>
+                      <option>Médico Arcaico</option>
+                      <option>Shinobi</option>
+                      <option>Nobre / Ex-nobre</option>
+                      <option>Comerciante</option>
+                      <option>Cavaleiro</option>
+                      <option>Mercenário</option>
+                      <option>General / Comandante</option>
+                      <option>Escravo / Ex-escravo</option>
+                      <option>Criador de Metias</option>
+                      <option>Criador de Armas</option>
+                      <option>Bombardeiro</option>
+                      <option>Investigador</option>
+                      <option>Assassino</option>
+                    </select>
+                  </div>
+                  <div class="info-line">
+                    <h3>CLASSE</h3>
+                    <select class="sheet-input" id="classe" name="classe" required>
+                      <option value="">Selecione...</option>
+                      <option>Mago</option>
+                      <option>Feiticeiro</option>
+                      <option>Bruxo</option>
+                      <option>Necromante</option>
+                      <option>Bárbaro</option>
+                      <option>Bardo</option>
+                      <option>Clérigo</option>
+                      <option>Druida</option>
+                      <option>Atirador</option>
+                      <option>Cavaleiro</option>
+                      <option>Paladino</option>
+                      <option>Monge</option>
+                      <option>Tank</option>
+                      <option>Ladino</option>
+                      <option>Guerreiro</option>
+                      <option>Pugilista</option>
+                      <option>Assassino</option>
+                    </select>
+                  </div>
+                  <div class="info-line">
+                    <h3>RAÇA</h3>
+                    <select class="sheet-input" id="raca" name="raca" required>
+                      <option value="">Selecione...</option>
+                      <option>Humano</option>
+                      <option>Demi-Humano</option>
+                      <option>Semi-Humano</option>
+                      <option>Lobisomem</option>
+                      <option>Demônio/Oni</option>
+                      <option>Elfo</option>
+                      <option>Triclope</option>
+                      <option>Ciclope</option>
+                      <option>Semi-Dragão</option>
+                      <option>Mult-membros</option>
+                      <option>Semi-Gigante</option>
+                      <option>Espírito</option>
+                    </select>
+                  </div>
+                </div>
               </div>
             </div>
-          </section>
-
-          <section
-            id="atributos-section"
-            class="card"
-            style="position: relative"
-          >
-            <h2>
-              Atributos <span class="info">(15 pontos para distribuir)</span>
-            </h2>
-            <button
-              id="toggle-edicao-atributos"
-              type="button"
-              style="
-                position: absolute;
-                right: 20px;
-                top: 15px;
-                background-color: transparent;
-                border: none;
-                padding: 6px 12px;
-                border-radius: 6px;
-                cursor: pointer;
-                transition: 0.2s;
-              "
-              aria-label="Editar atributos"
-            >
-              <!-- SVG inicial (pencil) -->
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="white"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71
-             7.04a1.003 1.003 0 0 0 0-1.42l-2.34-2.34a1.003
-             1.003 0 0 0-1.42 0l-1.83 1.83 3.75
-             3.75 1.84-1.82z"
-                />
-              </svg>
-            </button>
-
-            <!-- 🔹 Roda de atributos SVG -->
-            <div
-              id="roda-atributos"
-              style="display: flex; justify-content: center; margin: 20px 0"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="600"
-                height="600"
-                viewBox="0 0 800 800"
-              >
-                <defs>
-                  <style>
-                    .bg {
-                      fill: #0b0b0b00;
-                    }
-                    .ring {
-                      fill: none;
-                      stroke: #ffffff;
-                      stroke-width: 8;
-                      opacity: 0.8;
-                    }
-                    .connector {
-                      stroke: #ffffff;
-                      stroke-width: 5;
-                      stroke-linecap: round;
-                      opacity: 0.8;
-                    }
-                    .outer {
-                      fill: none;
-                      stroke: #ffffff;
-                      stroke-width: 5;
-                    }
-                    .outer-fill {
-                      fill: rgba(255, 255, 255, 0.03);
-                    }
-                    .val-circle {
-                      fill: #0b0b0b;
-                      stroke: #ffffff;
-                      stroke-width: 3;
-                    }
-                    .val-text {
-                      font-family: "Cinzel", serif;
-                      font-size: 24px;
-                      fill: #ffffff;
-                      text-anchor: middle;
-                      dominant-baseline: central;
-                    }
-                    .abbr {
-                      font-family: "Cinzel", serif;
-                      font-weight: 700;
-                      font-size: 28px;
-                      fill: #ffffff;
-                      text-anchor: middle;
-                    }
-                    .fullname {
-                      font-family: "Cinzel", serif;
-                      font-size: 13px;
-                      fill: #ffffff;
-                      text-anchor: middle;
-                      opacity: 0.9;
-                    }
-                  </style>
-                </defs>
-
-                <rect class="bg" x="0" y="0" width="800" height="800" />
-                <g transform="translate(400,400)">
-                  <circle class="ring" r="140" />
-                  <circle class="ring" r="100" />
-                  <circle class="ring" r="60" />
-                  <circle
-                    cx="0"
-                    cy="0"
-                    r="50"
-                    fill="#0b0b0b"
-                    stroke="#ffffff"
-                    stroke-width="4"
+          </div>
+          <div class="character-sheet">
+              <div class="sheet-stats">
+                <div class="sheet-stats-container">
+                  <div class="att-container">
+                    <div class="attr-container">
+                      <div class="image-container">
+                        <img class="attr-image" src="../images/attr-circle.png" alt="">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="info-view">
+                    <div class="info-row1">
+                      <div class="nex-container">
+                        <div class="dropdown-container">
+                          <h4 class="sheet-subtitle">NÍVEL</h4>
+                          <div class="dropdown-button-container">
+                            <div class="lvl">
+                              <input class="sheet-input lvl-input" type="text" id="nivel">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="info-bar-wrapper">
+                      <div class="status-bars">
+                        <div class="status-item">
+                          <label>❤️ HP</label>
+                          <div class="status-bar">
+                            <div id="hp-bar" class="bar-fill"></div>
+                            <span id="hp-value" class="bar-text">0 / 0</span>
+                          </div>
+                          <div class="bar-controls">
+                            <button
+                              type="button"
+                              class="bar-btn"
+                              onclick="alterarStatus('hp', -1, event)"
+                            >
+                              –
+                            </button>
+                            <button
+                              type="button"
+                              class="bar-btn"
+                              onclick="alterarStatus('hp', 1, event)"
+                            >
+                              +
+                            </button>
+                          </div>
+                        </div>
+                        <div class="status-item">
+                          <label>🧠 Sanidade</label>
+                          <div class="status-bar">
+                            <div id="sanidade-bar" class="bar-fill"></div>
+                            <span id="sanidade-value" class="bar-text">0 / 0</span>
+                          </div>
+                          <div class="bar-controls">
+                            <button
+                              type="button"
+                              class="bar-btn"
+                              onclick="alterarStatus('sanidade', -1, event)"
+                            >
+                              –
+                            </button>
+                            <button
+                              type="button"
+                              class="bar-btn"
+                              onclick="alterarStatus('sanidade', 1, event)"
+                            >
+                              +
+                            </button>
+                          </div>
+                        </div>
+                        <div class="status-item">
+                          <label>🔮 Mana</label>
+                          <div class="status-bar">
+                            <div id="mana-bar" class="bar-fill"></div>
+                            <span id="mana-value" class="bar-text">0 / 0</span>
+                          </div>
+                          <div class="bar-controls">
+                            <button
+                              type="button"
+                              class="bar-btn"
+                              onclick="alterarStatus('mana', -1, event)"
+                            >
+                              –
+                            </button>
+                            <button
+                              type="button"
+                              class="bar-btn"
+                              onclick="alterarStatus('mana', 1, event)"
+                            >
+                              +
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="sheet-skills">
+                <div class="skills-container">
+                  <h1 class="skills-title"> PERÍCIAS </h1>
+              <p>
+                Selecione as perícias (<span id="max-pericias">0</span> máximo:
+                Inteligência + 3, além das automáticas).
+              </p>
+              <div id="pericias" class="pericias-grid">
+                <label
+                  ><input type="checkbox" name="pericia" value="Acrobacia" />
+                  Acrobacia</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Adestramento" />
+                  Adestramento</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Arma" /> Arma
+                  (<input
+                    type="text"
+                    class="arma-tipo"
+                    placeholder="Tipo"
+                    style="width: 80px"
+                  />)</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Atletismo" />
+                  Atletismo</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Atuação" />
+                  Atuação</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Atualidades" />
+                  Atualidades</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Conhecimento" />
+                  Conhecimento</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Contratante" />
+                  Contratante</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Criação" />
+                  Criação</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Crime" />
+                  Crime</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Diplomacia" />
+                  Diplomacia</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Enganação" />
+                  Enganação</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Explosivos" />
+                  Explosivos</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Fortitude" />
+                  Fortitude</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Furtividade" />
+                  Furtividade</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Iniciativa" />
+                  Iniciativa</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Intimidação" />
+                  Intimidação</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Intuição" />
+                  Intuição</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Investigação" />
+                  Investigação</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Linguagem" />
+                  Linguagem</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Luta" />
+                  Luta</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Magia de Água" />
+                  Magia de Água</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="pericia"
+                    value="Magia de Fogo/Gelo"
                   />
-                </g>
-
-                <!-- === Atributos === -->
-                <g id="grp-FOR">
-                  <line class="connector" x1="400" y1="400" x2="400" y2="210" />
-                  <circle class="outer-fill" cx="400" cy="150" r="60" />
-                  <circle class="outer" cx="400" cy="150" r="60" />
-                  <circle class="val-circle" cx="400" cy="110" r="22" />
-                  <text id="val-FOR" class="val-text" x="400" y="110">1</text>
-                  <text class="abbr" x="400" y="160">FOR</text>
-                  <text class="fullname" x="400" y="178">Força</text>
-                </g>
-
-                <g id="grp-AGI">
-                  <line
-                    class="connector"
-                    x1="400"
-                    y1="400"
-                    x2="533.78"
-                    y2="266.22"
+                  Magia de Fogo/Gelo</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Magia de Luz" />
+                  Magia de Luz</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Magia de Terra" />
+                  Magia de Terra</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="pericia"
+                    value="Magia de Trevas"
                   />
-                  <circle class="outer-fill" cx="576.78" cy="223.22" r="60" />
-                  <circle class="outer" cx="576.78" cy="223.22" r="60" />
-                  <circle class="val-circle" cx="576.78" cy="183.22" r="22" />
-                  <text id="val-AGI" class="val-text" x="576.78" y="183.22">
-                    1
-                  </text>
-                  <text class="abbr" x="576.78" y="233.22">AGI</text>
-                  <text class="fullname" x="576.78" y="251.22">Agilidade</text>
-                </g>
-
-                <g id="grp-CAR">
-                  <line class="connector" x1="400" y1="400" x2="590" y2="400" />
-                  <circle class="outer-fill" cx="650" cy="400" r="60" />
-                  <circle class="outer" cx="650" cy="400" r="60" />
-                  <circle class="val-circle" cx="650" cy="360" r="22" />
-                  <text id="val-CAR" class="val-text" x="650" y="360">1</text>
-                  <text class="abbr" x="650" y="410">CAR</text>
-                  <text class="fullname" x="650" y="428">Carisma</text>
-                </g>
-
-                <g id="grp-INT">
-                  <line
-                    class="connector"
-                    x1="400"
-                    y1="400"
-                    x2="532.78"
-                    y2="532.78"
-                  />
-                  <circle class="outer-fill" cx="576.78" cy="576.78" r="60" />
-                  <circle class="outer" cx="576.78" cy="576.78" r="60" />
-                  <circle class="val-circle" cx="576.78" cy="536.78" r="22" />
-                  <text id="val-INT" class="val-text" x="576.78" y="536.78">
-                    1
-                  </text>
-                  <text class="abbr" x="576.78" y="586.78">INT</text>
-                  <text class="fullname" x="576.78" y="604.78">
-                    Inteligência
-                  </text>
-                </g>
-
-                <g id="grp-MAN">
-                  <line class="connector" x1="400" y1="400" x2="400" y2="620" />
-                  <circle class="outer-fill" cx="400" cy="650" r="60" />
-                  <circle class="outer" cx="400" cy="650" r="60" />
-                  <circle class="val-circle" cx="400" cy="610" r="22" />
-                  <text id="val-MAN" class="val-text" x="400" y="610">1</text>
-                  <text class="abbr" x="400" y="660">MAN</text>
-                  <text class="fullname" x="400" y="678">Mana</text>
-                </g>
-
-                <g id="grp-RES">
-                  <line
-                    class="connector"
-                    x1="400"
-                    y1="400"
-                    x2="266.22"
-                    y2="533.78"
-                  />
-                  <circle class="outer-fill" cx="223.22" cy="576.78" r="60" />
-                  <circle class="outer" cx="223.22" cy="576.78" r="60" />
-                  <circle class="val-circle" cx="223.22" cy="536.78" r="22" />
-                  <text id="val-RES" class="val-text" x="223.22" y="536.78">
-                    1
-                  </text>
-                  <text class="abbr" x="223.22" y="586.78">RES</text>
-                  <text class="fullname" x="223.22" y="604.78">
-                    Resistência
-                  </text>
-                </g>
-
-                <g id="grp-SOR">
-                  <line class="connector" x1="400" y1="400" x2="210" y2="400" />
-                  <circle class="outer-fill" cx="150" cy="400" r="60" />
-                  <circle class="outer" cx="150" cy="400" r="60" />
-                  <circle class="val-circle" cx="150" cy="360" r="22" />
-                  <text id="val-SOR" class="val-text" x="150" y="360">1</text>
-                  <text class="abbr" x="150" y="410">SOR</text>
-                  <text class="fullname" x="150" y="428">Sorte</text>
-                </g>
-
-                <g id="grp-DET">
-                  <line
-                    class="connector"
-                    x1="400"
-                    y1="400"
-                    x2="265.22"
-                    y2="265.22"
-                  />
-                  <circle class="outer-fill" cx="223.22" cy="223.22" r="60" />
-                  <circle class="outer" cx="223.22" cy="223.22" r="60" />
-                  <circle class="val-circle" cx="223.22" cy="183.22" r="22" />
-                  <text id="val-DET" class="val-text" x="223.22" y="183.22">
-                    1
-                  </text>
-                  <text class="abbr" x="223.22" y="233.22">DET</text>
-                  <text class="fullname" x="223.22" y="251.22">Detecção</text>
-                </g>
-              </svg>
-            </div>
-
-            <!-- 🔹 Inputs originais (mantidos para compatibilidade, ocultos visualmente) -->
-            <div class="atributos-grid" style="display: none">
-              <div>
-                <input
-                  type="number"
-                  id="forca"
-                  class="atributo-input"
-                  value="1"
-                />
+                  Magia de Trevas</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Magia de Vento" />
+                  Magia de Vento</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Maldições" />
+                  Maldições</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Medicina" />
+                  Medicina</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Negociação" />
+                  Negociação</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Nobreza" />
+                  Nobreza</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Percepção" />
+                  Percepção</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Pilotagem" />
+                  Pilotagem</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Pontaria" />
+                  Pontaria</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Psychokinesis" />
+                  Psychokinesis</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Reflexos" />
+                  Reflexos</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Runas" />
+                  Runas</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Sobrevivência" />
+                  Sobrevivência</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Tática" />
+                  Tática</label
+                >
+                <label
+                  ><input type="checkbox" name="pericia" value="Vontade" />
+                  Vontade</label
+                >
               </div>
-              <div>
-                <input
-                  type="number"
-                  id="agilidade"
-                  class="atributo-input"
-                  value="1"
-                />
-              </div>
-              <div>
-                <input
-                  type="number"
-                  id="carisma"
-                  class="atributo-input"
-                  value="1"
-                />
-              </div>
-              <div>
-                <input
-                  type="number"
-                  id="inteligencia"
-                  class="atributo-input"
-                  value="1"
-                />
-              </div>
-              <div>
-                <input
-                  type="number"
-                  id="manaAttr"
-                  class="atributo-input"
-                  value="1"
-                />
-              </div>
-              <div>
-                <input
-                  type="number"
-                  id="resistencia"
-                  class="atributo-input"
-                  value="1"
-                />
-              </div>
-              <div>
-                <input
-                  type="number"
-                  id="sorte"
-                  class="atributo-input"
-                  value="1"
-                />
-              </div>
-              <div>
-                <input
-                  type="number"
-                  id="deteccao"
-                  class="atributo-input"
-                  value="1"
-                />
-              </div>
-            </div>
-
-            <p style="text-align: center; margin-top: 10px">
-              Pontos restantes: <span id="pontos-restantes">15</span>
-            </p>
-          </section>
-
-          <section id="pericias-section" class="card">
-            <h2>Perícias</h2>
-            <p>
-              Selecione as perícias (<span id="max-pericias">0</span> máximo:
-              Inteligência + 3, além das automáticas).
-            </p>
-            <div id="pericias" class="pericias-grid">
-              <label
-                ><input type="checkbox" name="pericia" value="Acrobacia" />
-                Acrobacia</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Adestramento" />
-                Adestramento</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Arma" /> Arma
-                (<input
-                  type="text"
-                  class="arma-tipo"
-                  placeholder="Tipo"
-                  style="width: 80px"
-                />)</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Atletismo" />
-                Atletismo</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Atuação" />
-                Atuação</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Atualidades" />
-                Atualidades</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Conhecimento" />
-                Conhecimento</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Contratante" />
-                Contratante</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Criação" />
-                Criação</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Crime" />
-                Crime</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Diplomacia" />
-                Diplomacia</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Enganação" />
-                Enganação</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Explosivos" />
-                Explosivos</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Fortitude" />
-                Fortitude</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Furtividade" />
-                Furtividade</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Iniciativa" />
-                Iniciativa</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Intimidação" />
-                Intimidação</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Intuição" />
-                Intuição</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Investigação" />
-                Investigação</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Linguagem" />
-                Linguagem</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Luta" />
-                Luta</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Magia de Água" />
-                Magia de Água</label
-              >
-              <label
-                ><input
-                  type="checkbox"
-                  name="pericia"
-                  value="Magia de Fogo/Gelo"
-                />
-                Magia de Fogo/Gelo</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Magia de Luz" />
-                Magia de Luz</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Magia de Terra" />
-                Magia de Terra</label
-              >
-              <label
-                ><input
-                  type="checkbox"
-                  name="pericia"
-                  value="Magia de Trevas"
-                />
-                Magia de Trevas</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Magia de Vento" />
-                Magia de Vento</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Maldições" />
-                Maldições</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Medicina" />
-                Medicina</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Negociação" />
-                Negociação</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Nobreza" />
-                Nobreza</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Percepção" />
-                Percepção</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Pilotagem" />
-                Pilotagem</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Pontaria" />
-                Pontaria</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Psychokinesis" />
-                Psychokinesis</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Reflexos" />
-                Reflexos</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Runas" />
-                Runas</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Sobrevivência" />
-                Sobrevivência</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Tática" />
-                Tática</label
-              >
-              <label
-                ><input type="checkbox" name="pericia" value="Vontade" />
-                Vontade</label
-              >
-            </div>
-          </section>
-
-          <section id="stats-section" class="card">
-            <h2>Status</h2>
-            <div class="status-bars">
-              <div class="status-item">
-                <label>❤️ HP</label>
-                <div class="status-bar">
-                  <div id="hp-bar" class="bar-fill"></div>
-                  <span id="hp-value" class="bar-text">0 / 0</span>
-                </div>
-                <div class="bar-controls">
-                  <button
-                    type="button"
-                    class="bar-btn"
-                    onclick="alterarStatus('hp', -1, event)"
-                  >
-                    –
-                  </button>
-                  <button
-                    type="button"
-                    class="bar-btn"
-                    onclick="alterarStatus('hp', 1, event)"
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-
-              <div class="status-item">
-                <label>🧠 Sanidade</label>
-                <div class="status-bar">
-                  <div id="sanidade-bar" class="bar-fill"></div>
-                  <span id="sanidade-value" class="bar-text">0 / 0</span>
-                </div>
-                <div class="bar-controls">
-                  <button
-                    type="button"
-                    class="bar-btn"
-                    onclick="alterarStatus('sanidade', -1, event)"
-                  >
-                    –
-                  </button>
-                  <button
-                    type="button"
-                    class="bar-btn"
-                    onclick="alterarStatus('sanidade', 1, event)"
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-
-              <div class="status-item">
-                <label>🔮 Mana</label>
-                <div class="status-bar">
-                  <div id="mana-bar" class="bar-fill"></div>
-                  <span id="mana-value" class="bar-text">0 / 0</span>
-                </div>
-                <div class="bar-controls">
-                  <button
-                    type="button"
-                    class="bar-btn"
-                    onclick="alterarStatus('mana', -1, event)"
-                  >
-                    –
-                  </button>
-                  <button
-                    type="button"
-                    class="bar-btn"
-                    onclick="alterarStatus('mana', 1, event)"
-                  >
-                    +
-                  </button>
                 </div>
               </div>
             </div>
-          </section>
-
-          <section id="equipamento-section" class="card">
-            <h2>Equipamentos</h2>
-            <label for="equipamentos">Liste seus equipamentos:</label>
-            <textarea
-              id="equipamentos"
-              name="equipamentos"
-              rows="2"
-              placeholder="Ex: Katana, Armadura leve, Escudo..."
-            ></textarea>
-          </section>
-
-          <section id="bencaos-defeitos" class="card">
-            <h2>Bençãos & Defeitos</h2>
-            <div class="grid-2">
-              <div>
-                <label for="bencaos">Bençãos:</label>
-                <textarea
-                  id="bencaos"
-                  name="bencaos"
-                  rows="2"
-                  placeholder="Ex: Sorte, Cura acelerada..."
-                ></textarea>
-              </div>
-              <div>
-                <label for="defeitos">Defeitos:</label>
-                <textarea
-                  id="defeitos"
-                  name="defeitos"
-                  rows="2"
-                  placeholder="Ex: Medo, Maldição..."
-                ></textarea>
-              </div>
-            </div>
-          </section>
-
-          <section id="magias-dinamicas" class="card">
-            <h2>Magias (1º Círculo)</h2>
-            <div id="magia-container"></div>
-            <button type="button" onclick="adicionarCampoMagia()">
-              + Adicionar Magia
-            </button>
-          </section>
-
-          <section id="magias-livres" class="card">
-            <h2>Magias Extras (livres)</h2>
-            <label for="magias">Outras magias (livre):</label>
-            <textarea
-              id="magias"
-              name="magias"
-              rows="2"
-              placeholder="Ex: Magia personalizada, magia de outro círculo, etc..."
-            ></textarea>
-          </section>
-
-          <section id="inventario-section" class="card">
-            <h2>Inventário</h2>
-            <div
-              id="inventario-peso"
-              style="margin-top: 10px; margin-bottom: 10px"
-            ></div>
-            <div id="inventario-list"></div>
-            <div class="inventario-form">
-              <input type="text" id="item-nome" placeholder="Nome do item" />
-              <input
-                type="number"
-                id="item-quantidade"
-                min="1"
-                value="1"
-                style="width: 60px"
-              />
-              <input
-                type="number"
-                id="item-espaco"
-                min="1"
-                value="1"
-                style="width: 60px"
-                placeholder="Espaço"
-                title="Espaço ocupado"
-              />
-              <input
-                type="file"
-                id="item-miniatura"
-                accept="image/*"
-                style="width: 120px"
-                title="Miniatura"
-              />
-              <input
-                type="text"
-                id="item-descricao"
-                placeholder="Descrição do item"
-                style="flex: 2"
-              />
-              <button type="button" onclick="adicionarItemInventario()">
-                + Adicionar Item
-              </button>
-            </div>
-          </section>
-        </form>
-      </main>
-      <aside class="preview-section" id="ficha-preview">
-        <!-- Preview será preenchido via JavaScript -->
-      </aside>
+          </div>
+      </div>
       <!-- Container onde as notificações aparecerão -->
       <div id="notificacoes"></div>
     </div>

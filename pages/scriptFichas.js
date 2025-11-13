@@ -9,8 +9,8 @@ const racaSelect = document.getElementById('raca');
 const classeSelect = document.getElementById('classe');
 
 function playSound(url) {
-  const roll_dice_sound_effect = new Audio(url);
-  roll_dice_sound_effect.play();
+  const audio = new Audio(url);
+  audio.play();
 }
 
 // Mapeamento de perícias automáticas por raça
@@ -223,115 +223,6 @@ if (racaSelect) {
 if (classeSelect) {
   classeSelect.addEventListener('change', atualizarPericias);
 }
-
-// ===== Preview atualizado (substituir a função antiga) =====
-function atualizarPreview() {
-  const previewEl = document.getElementById('ficha-preview');
-  if (!previewEl) return;
-
-  const nome = document.getElementById('nome')?.value || "-";
-  const idade = document.getElementById('idade')?.value || "-";
-  const sexo = document.getElementById('sexo')?.value || "-";
-  const raca = racaSelect ? racaSelect.value : "-";
-  const classe = classeSelect ? classeSelect.value : "-";
-  const origem = document.getElementById('origem')?.value || "-";
-
-  // Atributos
-  let atributosHtml = '';
-  atributoInputs.forEach(input => {
-    const label = document.querySelector(`label[for="${input.id}"]`);
-    const nomeLabel = label ? label.textContent.replace(':','') : input.id;
-    atributosHtml += `<p><strong>${nomeLabel}:</strong> ${input.value}</p>`;
-  });
-
-  // Status (usando statusAtual)
-  const hpAtual = Number.isFinite(Number(statusAtual.hp)) ? statusAtual.hp : '-';
-  const hpMax = Number.isFinite(Number(statusAtual.max.hp)) ? statusAtual.max.hp : '-';
-  const sanAtual = Number.isFinite(Number(statusAtual.sanidade)) ? statusAtual.sanidade : '-';
-  const sanMax = Number.isFinite(Number(statusAtual.max.sanidade)) ? statusAtual.max.sanidade : '-';
-  const manaAtual = Number.isFinite(Number(statusAtual.mana)) ? statusAtual.mana : '-';
-  const manaMax = Number.isFinite(Number(statusAtual.max.mana)) ? statusAtual.max.mana : '-';
-
-  // Perícias selecionadas
-  const periciasSelecionadas = Array.from(periciaCheckboxes)
-    .filter(cb => cb.checked)
-    .map(cb => {
-      if (cb.value === "Arma") {
-        const armaTipo = cb.parentElement.querySelector('.arma-tipo');
-        return `Arma${armaTipo && armaTipo.value ? " (" + armaTipo.value + ")" : ""}`;
-      }
-      return cb.value;
-    });
-
-  // Magias selecionadas
-  const magiasSelecionadas = Array.from(document.querySelectorAll('.magia-select'))
-    .map(s => s.value)
-    .filter(v => v);
-
-  // Inventário
-  let inventarioHtml = '';
-  if (!inventario || inventario.length === 0) {
-    inventarioHtml = '<li>Nenhum item no inventário.</li>';
-  } else {
-    inventarioHtml = inventario.map(it => {
-      const desc = it.descricao ? ` - ${it.descricao}` : '';
-      return `<li><strong>${it.nome}</strong> x${it.quantidade} (Espaço: ${it.espaco})${desc}</li>`;
-    }).join('');
-  }
-
-  // Monta HTML do preview
-  const html = `
-    <h3>Preview da Ficha</h3>
-    <div class="preview-content">
-      <p><strong>Nome:</strong> ${nome}</p>
-      <p><strong>Idade:</strong> ${idade}</p>
-      <p><strong>Sexo:</strong> ${sexo}</p>
-      <p><strong>Raça:</strong> ${raca}</p>
-      <p><strong>Classe:</strong> ${classe}</p>
-      <p><strong>Origem:</strong> ${origem}</p>
-
-      <h4>Atributos</h4>
-      <div class="preview-atributos">
-        ${atributosHtml}
-      </div>
-
-      <h4>Status</h4>
-      <p><strong>Pontos Restantes:</strong> ${pontosRestantesEl?.textContent || '-'}</p>
-      <p><strong>HP:</strong> ${hpAtual} / ${hpMax}</p>
-      <p><strong>Sanidade:</strong> ${sanAtual} / ${sanMax}</p>
-      <p><strong>Mana:</strong> ${manaAtual} / ${manaMax}</p>
-
-      <h4>Perícias</h4>
-      <ul>
-        ${periciasSelecionadas.length ? periciasSelecionadas.map(p => `<li>${p}</li>`).join('') : '<li>Nenhuma perícia selecionada.</li>'}
-      </ul>
-
-      <h4>Magias Selecionadas</h4>
-      <ul>
-        ${magiasSelecionadas.length ? magiasSelecionadas.map(m => `<li>${m}</li>`).join('') : '<li>Nenhuma magia selecionada.</li>'}
-      </ul>
-
-      <h4>Magias Extras</h4>
-      <p>${document.getElementById("magias")?.value || '-'}</p>
-
-      <h4>Bençãos</h4>
-      <p>${document.getElementById("bencaos")?.value || '-'}</p>
-
-      <h4>Defeitos</h4>
-      <p>${document.getElementById("defeitos")?.value || '-'}</p>
-
-      <h4>Inventário</h4>
-      <ul>${inventarioHtml}</ul>
-    </div>
-  `;
-
-  previewEl.innerHTML = html;
-}
-
-// Atualiza preview em qualquer campo
-document.querySelectorAll('input, select, textarea').forEach(el => {
-  el.addEventListener('input', atualizarPreview);
-});
 
 // Magias dinâmicas
 function adicionarCampoMagia(valor = "") {

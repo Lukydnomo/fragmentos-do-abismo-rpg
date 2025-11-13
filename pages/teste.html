@@ -1,0 +1,227 @@
+<section class="acoes">
+              <button type="button" onclick="gerarPDF()">📄 Gerar PDF</button>
+              <button type="button" onclick="salvarJSON()">
+                💾 Salvar Ficha (JSON)
+              </button>
+              <label class="file-upload">
+                📂 Carregar Ficha
+                <input
+                  type="file"
+                  id="inputJson"
+                  accept=".json"
+                  onchange="carregarJSON()"
+                  hidden
+                />
+              </label>
+              <!-- Caixa de rolagem com input -->
+              <div class="rolagem-container">
+                <input
+                  type="text"
+                  id="expressaoDado"
+                  placeholder="Digite uma rolagem (ex: 1d20+3)"
+                />
+                <button type="button" id="rolarDado">
+                  <img src="../images/dice-icon.png" alt="" style="width: 16px" />
+                </button>
+              </div>
+              <div id="resultadoRolagem"></div>
+            </section>
+            <section
+              id="atributos-section"
+              class="card"
+              style="position: relative"
+            >
+              <button
+                id="toggle-edicao-atributos"
+                type="button"
+                style="
+                  position: absolute;
+                  right: 20px;
+                  top: 15px;
+                  background-color: transparent;
+                  border: none;
+                  padding: 6px 12px;
+                  border-radius: 6px;
+                  cursor: pointer;
+                  transition: 0.2s;
+                "
+                aria-label="Editar atributos"
+              >
+              </div>
+              <!-- 🔹 Inputs originais (mantidos para compatibilidade, ocultos visualmente) -->
+              <div class="atributos-grid" style="display: none">
+                <div>
+                  <input
+                    type="number"
+                    id="forca"
+                    class="atributo-input"
+                    value="1"
+                    max="20"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="number"
+                    id="agilidade"
+                    class="atributo-input"
+                    value="1"
+                    max="20"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="number"
+                    id="carisma"
+                    class="atributo-input"
+                    value="1"
+                    max="20"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="number"
+                    id="inteligencia"
+                    class="atributo-input"
+                    value="1"
+                    max="20"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="number"
+                    id="manaAttr"
+                    class="atributo-input"
+                    value="1"
+                    max="20"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="number"
+                    id="resistencia"
+                    class="atributo-input"
+                    value="1"
+                    max="20"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="number"
+                    id="sorte"
+                    class="atributo-input"
+                    value="1"
+                    max="20"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="number"
+                    id="deteccao"
+                    class="atributo-input"
+                    value="1"
+                    max="20"
+                  />
+                </div>
+              </div>
+              <p style="text-align: center; margin-top: 10px">
+                Pontos restantes: <span id="pontos-restantes">15</span>
+              </p>
+            </section>
+            <section id="stats-section" class="card">
+              <h2>Status</h2>
+            </section>
+            <section id="equipamento-section" class="card">
+              <h2>Equipamentos</h2>
+              <label for="equipamentos">Liste seus equipamentos:</label>
+              <textarea
+                id="equipamentos"
+                name="equipamentos"
+                rows="2"
+                placeholder="Ex: Katana, Armadura leve, Escudo..."
+              ></textarea>
+            </section>
+            <section id="bencaos-defeitos" class="card">
+              <h2>Bençãos & Defeitos</h2>
+              <div class="grid-2">
+                <div>
+                  <label for="bencaos">Bençãos:</label>
+                  <textarea
+                    id="bencaos"
+                    name="bencaos"
+                    rows="2"
+                    placeholder="Ex: Sorte, Cura acelerada..."
+                  ></textarea>
+                </div>
+                <div>
+                  <label for="defeitos">Defeitos:</label>
+                  <textarea
+                    id="defeitos"
+                    name="defeitos"
+                    rows="2"
+                    placeholder="Ex: Medo, Maldição..."
+                  ></textarea>
+                </div>
+              </div>
+            </section>
+            <section id="magias-dinamicas" class="card">
+              <h2>Magias (1º Círculo)</h2>
+              <div id="magia-container"></div>
+              <button type="button" onclick="adicionarCampoMagia()">
+                + Adicionar Magia
+              </button>
+            </section>
+            <section id="magias-livres" class="card">
+              <h2>Magias Extras (livres)</h2>
+              <label for="magias">Outras magias (livre):</label>
+              <textarea
+                id="magias"
+                name="magias"
+                rows="2"
+                placeholder="Ex: Magia personalizada, magia de outro círculo, etc..."
+              ></textarea>
+            </section>
+            <section id="inventario-section" class="card">
+              <h2>Inventário</h2>
+              <div
+                id="inventario-peso"
+                style="margin-top: 10px; margin-bottom: 10px"
+              ></div>
+              <div id="inventario-list"></div>
+              <div class="inventario-form">
+                <input type="text" id="item-nome" placeholder="Nome do item" />
+                <input
+                  type="number"
+                  id="item-quantidade"
+                  min="1"
+                  value="1"
+                  style="width: 60px"
+                  placeholder="Quantidade"
+                />
+                <input
+                  type="number"
+                  id="item-espaco"
+                  min="1"
+                  value="1"
+                  style="width: 60px"
+                  placeholder="Espaço"
+                  title="Espaço ocupado"
+                />
+                <input
+                  type="file"
+                  id="item-miniatura"
+                  accept="image/*"
+                  style="width: 120px"
+                  title="Miniatura"
+                />
+                <input
+                  type="text"
+                  id="item-descricao"
+                  placeholder="Descrição do item"
+                  style="flex: 2"
+                />
+                <button type="button" onclick="adicionarItemInventario()">
+                  + Adicionar Item
+                </button>
+              </div>
+            </section>
+        </div>
