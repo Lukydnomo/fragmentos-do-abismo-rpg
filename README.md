@@ -30,7 +30,7 @@ Ainda estou começando, então o site não está funcional por completo. Planejo
 
 ## Sobre Mim
 
-Eu sou o **Lukydnomo (Andrio)**, tenho 14 anos e estou aprendendo a programar enquanto trabalho nesse projeto. Meu objetivo é criar algo divertido e útil para mim e meus amigos enquanto exploro o mundo do desenvolvimento web.
+Eu sou o **Lukydnomo**, estou aprendendo a programar enquanto trabalho nesse projeto. Meu objetivo é criar algo divertido e útil para mim e meus amigos enquanto exploro o mundo do desenvolvimento web.
 
 ---
 
